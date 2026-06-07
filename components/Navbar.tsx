@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -22,10 +23,11 @@ export default function Navbar() {
   }, [])
 
   const navItems = [
-    { name: "Products", href: "#mission" },
-    { name: "Technology", href: "#community" },
-    { name: "Gallery", href: "#testimonials" },
-    { name: "Accessories", href: "#join" },
+    { name: "Tentang", href: "#tentang" },
+    { name: "Struktur", href: "#struktur" },
+    { name: "Program Kerja", href: "#proker" },
+    { name: "Kegiatan", href: "#kegiatan" },
+    { name: "Kontak", href: "#kontak" },
   ]
 
   const scrollToSection = (href: string) => {
@@ -51,18 +53,27 @@ export default function Navbar() {
         initial={{ y: -100, x: "-50%", opacity: 0 }}
         animate={{ y: 0, x: "-50%", opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed left-1/2 z-50 w-[95%] max-w-5xl transition-all duration-300 ${
-          isScrolled 
-            ? "top-4 py-2 bg-white/90 border-white/50 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)]" 
-            : "top-6 py-4 bg-white/95 border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)]"
-        } rounded-full border backdrop-blur-md px-6 md:px-8 flex items-center justify-between`}
+        className={`fixed left-1/2 z-50 w-[95%] max-w-5xl transition-all duration-300 ${isScrolled
+          ? "top-4 py-2 bg-white/90 border-white/50 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)]"
+          : "top-6 py-4 bg-white/95 border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)]"
+          } rounded-full border backdrop-blur-md px-6 md:px-8 flex items-center justify-between`}
       >
         {/* Brand / Logo */}
-        <button 
+        <button
           onClick={() => scrollToSection("#hero")}
-          className="text-gray-900 font-extrabold text-lg md:text-xl tracking-[0.2em] hover:opacity-80 transition-opacity"
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
-          WADADA
+          <Image
+            src="/logo/logo-IPM.webp"
+            alt="IPM Kukar Logo"
+            width={60}
+            height={60}
+            className="object-contain"
+          />
+          <div className="flex flex-col items-start text-emerald font-extrabold text-base md:text-lg leading-tight tracking-wide">
+            <span>IPM</span>
+            <span>KUKAR</span>
+          </div>
         </button>
 
         {/* Desktop Navigation Links */}
@@ -78,13 +89,13 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Right CTA Button (matching the black capsule button in the image) */}
+        {/* Right CTA Button */}
         <div className="hidden md:block">
-          <button 
-            onClick={() => scrollToSection("#join")}
-            className="bg-black text-white hover:bg-zinc-800 transition-all duration-300 rounded-full py-2.5 px-6 font-semibold text-xs tracking-wider uppercase"
+          <button
+            onClick={() => scrollToSection("#gabung")}
+            className="bg-gold text-emerald-deeper hover:bg-gold/90 transition-all duration-300 rounded-full py-2.5 px-6 font-semibold text-xs tracking-wider uppercase"
           >
-            Buy the product
+            Gabung Sekarang
           </button>
         </div>
 
@@ -120,10 +131,10 @@ export default function Navbar() {
               ))}
               <hr className="my-2 border-gray-100" />
               <button
-                onClick={() => scrollToSection("#join")}
-                className="bg-black text-white hover:bg-zinc-800 py-3 rounded-full font-semibold text-sm tracking-wider uppercase transition-colors"
+                onClick={() => scrollToSection("#gabung")}
+                className="bg-gold text-emerald-deeper hover:bg-gold/90 py-3 rounded-full font-semibold text-sm tracking-wider uppercase transition-colors"
               >
-                Buy the product
+                Gabung Sekarang
               </button>
             </div>
           </motion.div>

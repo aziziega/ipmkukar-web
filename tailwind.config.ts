@@ -13,6 +13,7 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
+  			// shadcn/ui colors
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -62,7 +63,21 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+  			// IPM Kukar custom colors
+  			emerald: {
+  				DEFAULT: '#1a9e6e',
+  				dark: '#0f7a52',
+  				deeper: '#0a5c3d',
+  			},
+  			gold: {
+  				DEFAULT: '#f0b429',
+  				light: '#fde68a',
+  			},
+  			surface: '#f4faf7',
+  			'border-custom': '#d1e8df',
+  			'text-primary': '#0f1f18',
+  			'text-secondary': '#4a5e56',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

@@ -4,9 +4,12 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'IPM-Kukar | Yogya',
+  description: 'Ikatan Pelajar Mahasiswa Kutai Kartanegara Yogyakarta - Wadah berhimpun mahasiswa Kukar di Yogyakarta',
+  icons: {
+    icon: '/logo/logo-IPM.webp',
+    apple: '/logo/logo-IPM.webp',
+  },
 }
 
 export default function RootLayout({

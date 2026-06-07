@@ -1,13 +1,22 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Instagram, Twitter, Facebook, MapPin, Mail, Phone } from "lucide-react"
+import { Instagram, Youtube, MapPin, Mail, Phone } from "lucide-react"
+import { FaTiktok, FaWhatsapp } from "react-icons/fa"
+import Image from "next/image"
 
 export default function Footer() {
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
   return (
-    <footer className="relative bg-white border-t border-gray-200">
-      {/* Subtle Grid Pattern */}
-      <div className="absolute inset-0 bg-grid-subtle opacity-20 pointer-events-none" />
+    <footer id="kontak" className="relative bg-emerald-deeper text-white">
+      {/* Gold Decorative Line at Top */}
+      <div className="h-1 w-full bg-gradient-to-r from-transparent via-gold to-transparent"></div>
 
       <div className="container mx-auto px-6 py-16 relative z-10">
         {/* Main Footer Content */}
@@ -20,34 +29,56 @@ export default function Footer() {
             viewport={{ once: true }}
             className="lg:col-span-2"
           >
-            <h3 className="text-3xl md:text-4xl font-black tracking-wider text-gray-900 mb-4">WADADA RUN CLUB</h3>
-            <p className="text-lg text-gray-600 leading-relaxed mb-6 max-w-md">
-              Movement isn't an option, it's a lifestyle. Join our global community of runners who believe in pushing
-              boundaries and celebrating every step of the journey.
+            {/* Logo */}
+            <div className="flex items-center gap-3 mb-4">
+              <Image
+                src="/logo/logo-IPM.webp"
+                alt="IPM Kukar Logo"
+                width={48}
+                height={48}
+                className="object-contain"
+              />
+              <h3 className="text-2xl font-black text-white">IPM KUKAR - Yogyakarta</h3>
+            </div>
+
+            {/* Tagline */}
+            <p className="text-xl font-semibold text-gold mb-4">
+              Dari Kukar, untuk Kukar
+            </p>
+
+            <p className="text-base text-white/80 leading-relaxed mb-6 max-w-md">
+              Organisasi daerah yang menghimpun mahasiswa Kutai Kartanegara di Yogyakarta sejak 2002.
             </p>
 
             {/* Social Links */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               <a
                 href="#"
-                className="w-12 h-12 bg-gray-900 hover:bg-gray-700 text-white rounded-full flex items-center justify-center transition-colors duration-300"
-                aria-label="Follow us on Instagram"
+                className="w-10 h-10 bg-emerald hover:bg-emerald-dark text-white rounded-full flex items-center justify-center transition-colors duration-300"
+                aria-label="Instagram"
               >
-                <Instagram size={20} />
+                <Instagram size={18} />
               </a>
               <a
                 href="#"
-                className="w-12 h-12 bg-gray-900 hover:bg-gray-700 text-white rounded-full flex items-center justify-center transition-colors duration-300"
-                aria-label="Follow us on Twitter"
+                className="w-10 h-10 bg-emerald hover:bg-emerald-dark text-white rounded-full flex items-center justify-center transition-colors duration-300"
+                aria-label="TikTok"
               >
-                <Twitter size={20} />
+                <FaTiktok size={16} />
               </a>
               <a
                 href="#"
-                className="w-12 h-12 bg-gray-900 hover:bg-gray-700 text-white rounded-full flex items-center justify-center transition-colors duration-300"
-                aria-label="Follow us on Facebook"
+                className="w-10 h-10 bg-emerald hover:bg-emerald-dark text-white rounded-full flex items-center justify-center transition-colors duration-300"
+                aria-label="YouTube"
               >
-                <Facebook size={20} />
+                <Youtube size={18} />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-emerald hover:bg-emerald-dark text-white rounded-full flex items-center justify-center transition-colors duration-300"
+                aria-label="WhatsApp"
+              >
+                <FaWhatsapp size={18} />
               </a>
             </div>
           </motion.div>
@@ -59,32 +90,47 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-xl font-bold text-gray-900 mb-6 tracking-wide">QUICK LINKS</h4>
+            <h4 className="text-lg font-bold text-white mb-6 tracking-wide">NAVIGASI</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium">
-                  Join Us
-                </a>
+                <button
+                  onClick={() => scrollToSection("#tentang")}
+                  className="text-white/80 hover:text-gold transition-colors duration-300 font-medium"
+                >
+                  Tentang Kami
+                </button>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium">
-                  Find Your Chapter
-                </a>
+                <button
+                  onClick={() => scrollToSection("#struktur")}
+                  className="text-white/80 hover:text-gold transition-colors duration-300 font-medium"
+                >
+                  Struktur Organisasi
+                </button>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium">
-                  Training Plans
-                </a>
+                <button
+                  onClick={() => scrollToSection("#proker")}
+                  className="text-white/80 hover:text-gold transition-colors duration-300 font-medium"
+                >
+                  Program Kerja
+                </button>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium">
-                  Events
-                </a>
+                <button
+                  onClick={() => scrollToSection("#kegiatan")}
+                  className="text-white/80 hover:text-gold transition-colors duration-300 font-medium"
+                >
+                  Kegiatan
+                </button>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium">
-                  Community
-                </a>
+                <button
+                  onClick={() => scrollToSection("#gabung")}
+                  className="text-white/80 hover:text-gold transition-colors duration-300 font-medium"
+                >
+                  Bergabung
+                </button>
               </li>
             </ul>
           </motion.div>
@@ -96,79 +142,56 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-xl font-bold text-gray-900 mb-6 tracking-wide">GET IN TOUCH</h4>
+            <h4 className="text-lg font-bold text-white mb-6 tracking-wide">KONTAK</h4>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <MapPin size={18} className="text-gray-600" />
-                <span className="text-gray-600 font-medium">Kingston, Jamaica</span>
+                <MapPin size={18} className="text-gold flex-shrink-0" />
+                <span className="text-white/80 font-medium">Yogyakarta, Indonesia</span>
               </div>
               <div className="flex items-center space-x-3">
-                <Mail size={18} className="text-gray-600" />
+                <Mail size={18} className="text-gold flex-shrink-0" />
                 <a
-                  href="mailto:hello@wadadarun.club"
-                  className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium"
+                  href="mailto:ipmkukar.jogja@email.com"
+                  className="text-white/80 hover:text-gold transition-colors duration-300 font-medium"
                 >
-                  hello@wadadarun.club
+                  ipmkukar.jogja@email.com
                 </a>
               </div>
               <div className="flex items-center space-x-3">
-                <Phone size={18} className="text-gray-600" />
+                <Phone size={18} className="text-gold flex-shrink-0" />
                 <a
-                  href="tel:+1876555WADA"
-                  className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium"
+                  href="tel:+6281234567890"
+                  className="text-white/80 hover:text-gold transition-colors duration-300 font-medium"
                 >
-                  +1 (876) 555-WADA
+                  +62 812-3456-7890
                 </a>
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Newsletter Signup */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="border-t border-gray-200 pt-12 mb-12"
-        >
-          <div className="max-w-2xl mx-auto text-center">
-            <h4 className="text-2xl md:text-3xl font-black text-gray-900 mb-4 tracking-wide">STAY IN THE LOOP</h4>
-            <p className="text-lg text-gray-600 mb-8">
-              Get the latest updates on runs, events, and community news delivered to your inbox.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-md focus:border-gray-900 focus:outline-none text-gray-900 font-medium"
-              />
-              <button className="px-8 py-3 bg-gray-900 hover:bg-gray-700 text-white font-bold rounded-md transition-colors duration-300 tracking-wide">
-                SUBSCRIBE
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Bottom Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
+          className="border-t border-white/20 pt-8 text-center"
         >
-          <p className="text-gray-600 font-medium">© 2024 Wadada Run Club. All rights reserved.</p>
-
-          <div className="flex space-x-6">
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium">
-              Privacy Policy
+          <p className="text-white/70 font-medium mb-2">
+            © 2026 IPM Kukar Yogyakarta. All rights reserved.
+          </p>
+          <p className="text-white/50 text-sm">
+            Web Design by{" "}
+            <a
+              href="https://aziziem.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold hover:text-gold-light transition-colors duration-300 font-semibold"
+            >
+              Azizi
             </a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300 font-medium">
-              Terms of Service
-            </a>
-          </div>
+          </p>
         </motion.div>
       </div>
     </footer>
