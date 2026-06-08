@@ -157,19 +157,19 @@ export default function HeroSection() {
         <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16" variants={buttonVariants}>
           <Button
             size="lg"
-            className="bg-emerald hover:bg-emerald-dark text-white font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="bg-gold hover:bg-gold-light text-emerald-deeper font-bold px-10 py-6 text-lg rounded-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+            onClick={() => scrollToSection("#gabung")}
+          >
+            Bergabung Sekarang →
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="bg-emerald text-white hover:bg-white hover:text-emerald-deeper font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300"
             onClick={() => scrollToSection("#tentang")}
           >
             Kenali Kami
           </Button>
-          {/* <Button
-            size="lg"
-            variant="outline"
-            className="border-2 border-white text-white hover:bg-white hover:text-emerald-deeper font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300"
-            onClick={() => scrollToSection("#kegiatan")}
-          >
-            Lihat Kegiatan
-          </Button> */}
         </motion.div>
 
         {/* Scroll Down Indicator */}

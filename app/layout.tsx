@@ -5,7 +5,7 @@ import './globals.css'
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'IPM-Kukar | Yogyakarta',
+  title: 'IPM KUKAR | Yogyakarta',
   description: 'Ikatan Pelajar Mahasiswa Kutai Kartanegara Yogyakarta - Wadah berhimpun mahasiswa Kukar di Yogyakarta',
   icons: {
     icon: '/logo/logo-IPM.webp',

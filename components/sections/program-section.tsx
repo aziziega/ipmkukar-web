@@ -25,6 +25,8 @@ interface TimelineItemProps {
 
 function TimelineItem({ entry, index }: TimelineItemProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const itemRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress: itemProgress } = useScroll({
     target: itemRef,
@@ -42,6 +44,30 @@ function TimelineItem({ entry, index }: TimelineItemProps) {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + entry.images.length) % entry.images.length)
+  }
+
+  // Touch handlers for swipe gesture
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    if (isLeftSwipe) {
+      nextSlide()
+    } else if (isRightSwipe) {
+      prevSlide()
+    }
   }
 
   return (
@@ -63,7 +89,12 @@ function TimelineItem({ entry, index }: TimelineItemProps) {
             })}
           >
             <div className="sticky top-20">
-              <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-gray-100 border-2 border-gray-200 shadow-xl group">
+              <div 
+                className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-gray-100 border-2 border-gray-200 shadow-xl group touch-pan-y"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
                 {/* Images */}
                 {entry.images.map((image, idx) => (
                   <div
@@ -76,7 +107,8 @@ function TimelineItem({ entry, index }: TimelineItemProps) {
                     <img
                       src={image}
                       alt={`${entry.alt} - Photo ${idx + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover select-none"
+                      draggable={false}
                     />
                   </div>
                 ))}
@@ -90,38 +122,41 @@ function TimelineItem({ entry, index }: TimelineItemProps) {
                   </Badge>
                 </div>
 
-                {/* Navigation Arrows */}
+                {/* Navigation Arrows - Always visible on mobile, hover on desktop */}
                 {entry.images.length > 1 && (
                   <>
                     <button
                       onClick={prevSlide}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 active:scale-95"
                       aria-label="Previous image"
                     >
-                      <ChevronLeft className="w-5 h-5 text-gray-900" />
+                      <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-900" />
                     </button>
                     <button
                       onClick={nextSlide}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 active:scale-95"
                       aria-label="Next image"
                     >
-                      <ChevronRight className="w-5 h-5 text-gray-900" />
+                      <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-gray-900" />
                     </button>
                   </>
                 )}
 
-                {/* Slide Indicators */}
+                {/* Slide Indicators - Flexible layout for any number of images */}
                 {entry.images.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                  <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-wrap items-center justify-center gap-1.5 md:gap-2 max-w-[90%] md:max-w-md">
                     {entry.images.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setCurrentSlide(idx)}
                         className={cn(
-                          "w-2 h-2 rounded-full transition-all duration-300",
+                          "rounded-full transition-all duration-300 p-1.5 -m-1.5 flex-shrink-0",
+                          entry.images.length >= 5 ? "w-1.5 h-1.5 md:w-2 md:h-2" : "w-2 h-2 md:w-2.5 md:h-2.5",
                           idx === currentSlide
-                            ? "bg-white w-6"
-                            : "bg-white/50 hover:bg-white/75"
+                            ? entry.images.length >= 5 
+                              ? "bg-white w-4 md:w-5" 
+                              : "bg-white w-5 md:w-6"
+                            : "bg-white/50 hover:bg-white/75 active:bg-white"
                         )}
                         aria-label={`Go to slide ${idx + 1}`}
                       />

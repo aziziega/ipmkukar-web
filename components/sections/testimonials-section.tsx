@@ -45,7 +45,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
     >
       <div
         className={cn(
-          "relative w-full h-full border-2 p-8 transition-colors duration-500 ease-in-out",
+          "relative w-full h-full border-2 p-5 md:p-6 transition-colors duration-500 ease-in-out flex flex-col",
           isCenter
             ? "bg-slate-900 text-white border-slate-900"
             : "bg-white text-gray-900 border-gray-200 hover:border-emerald",
@@ -65,40 +65,42 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
         />
 
         {/* Initial Badge */}
-        <div className="mb-4">
+        <div className="mb-3 md:mb-4 flex-shrink-0">
           <div className={cn(
-            "w-14 h-14 rounded-lg bg-gradient-to-br flex items-center justify-center shadow-lg transition-transform duration-300",
+            "w-12 h-12 md:w-14 md:h-14 rounded-lg bg-gradient-to-br flex items-center justify-center shadow-lg transition-transform duration-300",
             testimonial.color
           )}
             style={{
               boxShadow: "3px 3px 0px hsl(var(--background))",
             }}
           >
-            <span className="text-white text-xl font-black">
+            <span className="text-white text-lg md:text-xl font-black">
               {testimonial.initials}
             </span>
           </div>
         </div>
 
-        {/* Quote Text */}
-        <h3 className={cn("text-sm sm:text-base font-normal leading-relaxed mb-4", isCenter ? "text-white" : "text-gray-900")}>
-          "{testimonial.quote}"
-        </h3>
+        {/* Quote Text - Flexible Height */}
+        <div className="flex-grow mb-3 md:mb-4 min-h-0">
+          <h3 className={cn("text-xs sm:text-sm md:text-base font-normal leading-relaxed", isCenter ? "text-white" : "text-gray-900")}>
+            "{testimonial.quote}"
+          </h3>
+        </div>
 
-        {/* Author Info */}
+        {/* Author Info - At Bottom */}
         <div
           className={cn(
-            "absolute bottom-8 left-8 right-8",
+            "mt-auto flex-shrink-0",
             isCenter ? "text-gray-300" : "text-gray-600",
           )}
         >
-          <p className="text-sm font-bold mb-1">
+          <p className="text-xs sm:text-sm font-bold mb-0.5 leading-tight">
             {testimonial.name}
           </p>
-          <p className="text-xs italic">
+          <p className="text-[10px] sm:text-xs italic leading-tight">
             {testimonial.role}
           </p>
-          <p className={cn("text-xs mt-1 font-semibold", isCenter ? "text-emerald-400" : "text-emerald")}>
+          <p className={cn("text-[10px] sm:text-xs mt-1 font-semibold leading-tight", isCenter ? "text-emerald-400" : "text-emerald")}>
             📍 {testimonial.asal}
           </p>
         </div>
