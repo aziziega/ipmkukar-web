@@ -165,7 +165,7 @@ export default function HeroSection() {
           <Button
             size="lg"
             variant="outline"
-            className="bg-emerald text-white hover:bg-white hover:text-emerald-deeper font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300"
+            className="bg-emerald text-white border-none hover:bg-white hover:text-emerald-deeper font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300 hover:shadow-2xl hover:scale-105"
             onClick={() => scrollToSection("#tentang")}
           >
             Kenali Kami
