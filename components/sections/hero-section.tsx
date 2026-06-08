@@ -1,5 +1,6 @@
 "use client"
 
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState, useEffect } from "react"
@@ -43,6 +44,53 @@ export default function HeroSection() {
     }
   }
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  }
+
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+      },
+    },
+  }
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+      },
+    },
+  }
+
+  const navVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: 1,
+      },
+    },
+  }
+
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image Slider */}
@@ -71,7 +119,7 @@ export default function HeroSection() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 container mx-auto px-6 py-8 md:py-12 text-center flex flex-col items-center justify-center min-h-[80vh]">
+      <motion.div className="relative z-10 container mx-auto px-6 py-8 md:py-12 text-center flex flex-col items-center justify-center min-h-[80vh]" variants={containerVariants} initial="hidden" animate="visible">
         {/* IPM Kukar Logo */}
         {/* <div className="mb-8 animate-fadeIn">
           <Image 
@@ -91,22 +139,22 @@ export default function HeroSection() {
         </div> */}
 
         {/* Main Headline */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight mt-16 md:mt-20">
+        <motion.h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight mt-16 md:mt-20" variants={textVariants}>
           Dari{" "}
           <span className="text-gold">Kukar</span>{" "}
           untuk{" "}
           <span className="text-gold">Kukar</span>
           <br />
           Bergerak Bersama di Jogja
-        </h1>
+        </motion.h1>
 
         {/* Subheadline */}
-        <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-10 leading-relaxed">
+        <motion.p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-10 leading-relaxed" variants={textVariants}>
           Wadah berhimpun mahasiswa Kutai Kartanegara di Yogyakarta — berkembang bersama dan memberi dampak nyata untuk daerah.
-        </p>
+        </motion.p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+        <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16" variants={buttonVariants}>
           <Button
             size="lg"
             className="bg-emerald hover:bg-emerald-dark text-white font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -122,7 +170,7 @@ export default function HeroSection() {
           >
             Lihat Kegiatan
           </Button> */}
-        </div>
+        </motion.div>
 
         {/* Scroll Down Indicator */}
         {/* <button
@@ -133,10 +181,10 @@ export default function HeroSection() {
           <span className="text-sm font-medium tracking-wide">Scroll untuk lebih lanjut</span>
           <ChevronDown className="w-6 h-6" />
         </button> */}
-      </div>
+      </motion.div>
 
       {/* Slider Navigation - Bottom Center */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+      <motion.div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 " variants={navVariants} initial="hidden" animate="visible">
         <div className="flex items-center space-x-4">
           {/* Previous Arrow */}
           <button
@@ -169,7 +217,7 @@ export default function HeroSection() {
             <ChevronRight size={24} />
           </button>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }
