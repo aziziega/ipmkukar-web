@@ -7,8 +7,11 @@ import { ArrowLeft, Check } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import Footer from "@/components/footer"
+import { useToast } from "@/hooks/use-toast"
 
 export default function BergabungPage() {
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
     nama: "",
     asal: "",
@@ -27,12 +30,10 @@ export default function BergabungPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    const message = `Halo! Saya ingin mendaftar sebagai anggota IPM Kukar Yogyakarta\n\nNama: ${formData.nama}\nAsal: ${formData.asal}\nUniversitas: ${formData.universitas}\nNo. WhatsApp: ${formData.whatsapp}`
-
-    const whatsappNumber = "6281234567890"
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
-
-    window.open(whatsappUrl, "_blank")
+    toast({
+      title: "Pendaftaran Online Belum Tersedia",
+      description: "Halo! Saat ini pendaftaran langsung melalui website belum dapat diproses karena sistem kami sedang dalam pemeliharaan. Silakan hubungi pengurus kami secara langsung atau gunakan informasi kontak di bagian bawah halaman ya. Terima kasih banyak atas pengertiannya! 😊",
+    })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +44,8 @@ export default function BergabungPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface via-white to-surface">
-      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-b from-surface via-white to-surface">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 flex-grow">
         {/* Back Button */}
         <Link href="/" className="inline-flex items-center gap-2 text-emerald hover:text-emerald-dark transition-colors mb-8 hover:gap-3 duration-300">
           <ArrowLeft size={20} />
@@ -206,6 +207,7 @@ export default function BergabungPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

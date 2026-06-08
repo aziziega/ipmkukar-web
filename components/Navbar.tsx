@@ -4,10 +4,13 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"
+import { usePathname, useRouter } from "next/navigation"
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname() // Track current path for active link highlighting
+  const router = useRouter()
 
   // Track scroll position to update navbar style
   useEffect(() => {
@@ -22,6 +25,19 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Handle scrolling to hash from other pages or direct loads
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash
+      if (hash) {
+        const timer = setTimeout(() => {
+          scrollToSection(hash)
+        }, 300)
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [pathname])
+
   const navItems = [
     { name: "Home", href: "/home" },
     { name: "Visi & Misi", href: "/visi-misi" },
@@ -29,18 +45,45 @@ export default function Navbar() {
   ]
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      const offset = 80 // offset for navbar height
-      const bodyRect = document.body.getBoundingClientRect().top
-      const elementRect = element.getBoundingClientRect().top
-      const elementPosition = elementRect - bodyRect
-      const offsetPosition = elementPosition - offset
+    try {
+      const element = document.querySelector(href)
+      if (element) {
+        const offset = 80 // offset for navbar height
+        const bodyRect = document.body.getBoundingClientRect().top
+        const elementRect = element.getBoundingClientRect().top
+        const elementPosition = elementRect - bodyRect
+        const offsetPosition = elementPosition - offset
 
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        })
+      }
+    } catch (e) {
+      console.error("Failed to query selector: ", href, e)
+    }
+    setIsMenuOpen(false)
+  }
+
+  const handleNavigation = (href: string) => {
+    if (pathname === href) {
+      // If already on the page, scroll to top smoothly
       window.scrollTo({
-        top: offsetPosition,
+        top: 0,
         behavior: "smooth"
       })
+    } else {
+      // Navigate client-side without full reload
+      router.push(href)
+    }
+    setIsMenuOpen(false)
+  }
+
+  const handleAnchorClick = (hash: string) => {
+    if (pathname === "/home") {
+      scrollToSection(hash)
+    } else {
+      router.push(`/home${hash}`)
     }
     setIsMenuOpen(false)
   }
@@ -58,7 +101,7 @@ export default function Navbar() {
       >
         {/* Brand / Logo */}
         <button
-          onClick={() => scrollToSection("/home")}
+          onClick={() => handleNavigation("/home")}
           className="flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
           <Image
@@ -76,27 +119,28 @@ export default function Navbar() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-10">
-          {navItems.map((item) => (
-            <button
-              key={item.name}
-              onClick={() => {
-                if (item.href.startsWith('/')) {
-                  window.location.href = item.href
-                } else {
-                  scrollToSection(item.href)
-                }
-              }}
-              className="text-gray-500 hover:text-gray-900 transition-colors duration-300 font-medium text-sm tracking-wide"
-            >
-              {item.name}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const isActive = pathname === item.href
+            return (
+              <button
+                key={item.name}
+                onClick={() => handleNavigation(item.href)}
+                className={`transition-all duration-300 font-medium text-sm tracking-wide pb-1 ${
+                  isActive
+                    ? 'text-emerald border-b-2 border-emerald'
+                    : 'text-gray-500 hover:text-gray-900 border-b-2 border-transparent'
+                }`}
+              >
+                {item.name}
+              </button>
+            )
+          })}
         </nav>
 
         {/* Right CTA Button */}
         <div className="hidden md:block">
           <button
-            onClick={() => scrollToSection("#gabung")}
+            onClick={() => handleAnchorClick("#gabung")}
             className="bg-gold text-emerald-deeper hover:bg-gold/90 transition-all duration-300 rounded-full py-2.5 px-6 font-semibold text-xs tracking-wider uppercase"
           >
             Gabung Sekarang
@@ -124,24 +168,25 @@ export default function Navbar() {
             className="fixed top-24 left-1/2 -translate-x-1/2 w-[90%] bg-white/95 backdrop-blur-md z-40 rounded-3xl border border-gray-100 p-6 shadow-2xl md:hidden"
           >
             <div className="flex flex-col gap-4 text-center">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => {
-                    if (item.href.startsWith('/')) {
-                      window.location.href = item.href
-                    } else {
-                      scrollToSection(item.href)
-                    }
-                  }}
-                  className="text-gray-600 hover:text-gray-900 font-medium py-2 text-base transition-colors"
-                >
-                  {item.name}
-                </button>
-              ))}
+              {navItems.map((item) => {
+                const isActive = pathname === item.href
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavigation(item.href)}
+                    className={`font-medium py-2 text-base transition-all pb-2 ${
+                      isActive
+                        ? 'text-emerald border-b-2 border-emerald'
+                        : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                    }`}
+                  >
+                    {item.name}
+                  </button>
+                )
+              })}
               <hr className="my-2 border-gray-100" />
               <button
-                onClick={() => scrollToSection("#gabung")}
+                onClick={() => handleAnchorClick("#gabung")}
                 className="bg-gold text-emerald-deeper hover:bg-gold/90 py-3 rounded-full font-semibold text-sm tracking-wider uppercase transition-colors"
               >
                 Gabung Sekarang

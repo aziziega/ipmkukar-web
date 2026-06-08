@@ -312,6 +312,9 @@ export default function ProgramSection() {
 
   return (
     <section id="proker" className="relative py-20 bg-white">
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-subtle opacity-20 pointer-events-none" />
+
       {/* Section Header */}
       <div className="container mx-auto px-6">
         <motion.div

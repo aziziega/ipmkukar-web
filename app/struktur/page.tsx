@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar"
 import StrukturSection from "@/components/sections/struktur-section"
-import BergabungFooterSection from "@/components/sections/bergabung-footer-section"
+import Footer from "@/components/footer"
 
 export const metadata = {
   title: "Struktur Kepengurusan | IPM Kukar Yogyakarta",
@@ -12,7 +12,7 @@ export default function StrukturPage() {
     <main className="min-h-screen">
       <Navbar />
       <StrukturSection />
-      <BergabungFooterSection />
+      <Footer />
     </main>
   )
 }

@@ -40,6 +40,9 @@ export default function KegiatanSection() {
 
   return (
     <section id="kegiatan" className="relative py-20 bg-surface">
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-subtle opacity-20 pointer-events-none" />
+
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div

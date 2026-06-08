@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar"
 import VisiMisiSection from "@/components/sections/visi-misi-section"
-import BergabungFooterSection from "@/components/sections/bergabung-footer-section"
+import Footer from "@/components/footer"
 
 export const metadata = {
   title: "Visi & Misi | IPM Kukar Yogyakarta",
@@ -12,7 +12,7 @@ export default function VisiMisiPage() {
     <main className="min-h-screen">
       <Navbar />
       <VisiMisiSection />
-      <BergabungFooterSection />
+      <Footer />
     </main>
   )
 }

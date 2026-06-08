@@ -57,7 +57,10 @@ export default function TentangSection() {
   }
 
   return (
-    <section id="tentang" className="relative py-20 bg-white">
+    <section id="tentang" className="relative py-20 bg-surface">
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-subtle opacity-20 pointer-events-none" />
+
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Left: Text Content */}
@@ -109,7 +112,7 @@ export default function TentangSection() {
               const Icon = value.icon
               return (
                 <motion.div key={index} variants={cardVariants}>
-                  <Card className="p-6 bg-surface border-l-4 border-l-emerald border-border-custom hover:shadow-lg transition-all duration-300">
+                  <Card className="p-6 bg-white border-l-4 border-l-emerald border-border-custom hover:shadow-lg transition-all duration-300">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-emerald/10 flex items-center justify-center">
                         <Icon className="w-6 h-6 text-emerald" />

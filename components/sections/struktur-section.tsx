@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 
 export default function StrukturSection() {
   return (
-    <section id="struktur" className="relative py-20 bg-surface">
+    <section id="struktur" className="relative pt-32 pb-20 bg-surface">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div

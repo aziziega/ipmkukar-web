@@ -111,6 +111,7 @@ const Letter = ({ children, progress, range }: LetterType) => {
       </span>
     )
   }
+  return null
 }
 
 const Char = ({ children, progress, range }: CharType) => {

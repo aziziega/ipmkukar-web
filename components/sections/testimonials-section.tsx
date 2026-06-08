@@ -29,72 +29,79 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
   return (
     <div
       onClick={() => handleMove(position)}
-      className={cn(
-        "absolute left-1/2 top-1/2 cursor-pointer border-2 p-8 transition-all duration-500 ease-in-out",
-        isCenter
-          ? "z-10 bg-slate-900 text-white border-slate-900"
-          : "z-0 bg-white text-gray-900 border-gray-200 hover:border-emerald",
-      )}
+      className="absolute left-1/2 top-1/2 cursor-pointer transition-all duration-500 ease-in-out"
       style={{
         width: cardSize,
         height: cardSize,
-        clipPath: `polygon(50px 0%, calc(100% - 50px) 0%, 100% 50px, 100% 100%, calc(100% - 50px) 100%, 50px 100%, 0 100%, 0 0)`,
         transform: `
           translate(-50%, -50%) 
           translateX(${(cardSize / 1.5) * position}px)
           translateY(${isCenter ? -65 : position % 2 ? 15 : -15}px)
           rotate(${isCenter ? 0 : position % 2 ? 2.5 : -2.5}deg)
         `,
-        boxShadow: isCenter ? "0px 8px 0px 4px hsl(var(--border))" : "0px 0px 0px 0px transparent",
+        zIndex: isCenter ? 10 : 0,
+        filter: isCenter ? "drop-shadow(0 15px 20px rgba(0, 0, 0, 0.08))" : "none",
       }}
     >
-      <span
-        className="absolute block origin-top-right rotate-45 bg-gray-300"
-        style={{
-          right: -2,
-          top: 48,
-          width: SQRT_5000,
-          height: 2,
-        }}
-      />
-
-      {/* Initial Badge */}
-      <div className="mb-4">
-        <div className={cn(
-          "w-14 h-14 rounded-lg bg-gradient-to-br flex items-center justify-center shadow-lg transition-transform duration-300",
-          testimonial.color
-        )}
-          style={{
-            boxShadow: "3px 3px 0px hsl(var(--background))",
-          }}
-        >
-          <span className="text-white text-xl font-black">
-            {testimonial.initials}
-          </span>
-        </div>
-      </div>
-
-      {/* Quote Text */}
-      <h3 className={cn("text-sm sm:text-base font-normal leading-relaxed mb-4", isCenter ? "text-white" : "text-gray-900")}>
-        "{testimonial.quote}"
-      </h3>
-
-      {/* Author Info */}
       <div
         className={cn(
-          "absolute bottom-8 left-8 right-8",
-          isCenter ? "text-gray-300" : "text-gray-600",
+          "relative w-full h-full border-2 p-8 transition-colors duration-500 ease-in-out",
+          isCenter
+            ? "bg-slate-900 text-white border-slate-900"
+            : "bg-white text-gray-900 border-gray-200 hover:border-emerald",
         )}
+        style={{
+          clipPath: `polygon(50px 0%, calc(100% - 50px) 0%, 100% 50px, 100% 100%, calc(100% - 50px) 100%, 50px 100%, 0 100%, 0 0)`,
+        }}
       >
-        <p className="text-sm font-bold mb-1">
-          {testimonial.name}
-        </p>
-        <p className="text-xs italic">
-          {testimonial.role}
-        </p>
-        <p className={cn("text-xs mt-1 font-semibold", isCenter ? "text-emerald-400" : "text-emerald")}>
-          📍 {testimonial.asal}
-        </p>
+        <span
+          className="absolute block origin-top-right rotate-45 bg-gray-300"
+          style={{
+            right: -2,
+            top: 48,
+            width: SQRT_5000,
+            height: 2,
+          }}
+        />
+
+        {/* Initial Badge */}
+        <div className="mb-4">
+          <div className={cn(
+            "w-14 h-14 rounded-lg bg-gradient-to-br flex items-center justify-center shadow-lg transition-transform duration-300",
+            testimonial.color
+          )}
+            style={{
+              boxShadow: "3px 3px 0px hsl(var(--background))",
+            }}
+          >
+            <span className="text-white text-xl font-black">
+              {testimonial.initials}
+            </span>
+          </div>
+        </div>
+
+        {/* Quote Text */}
+        <h3 className={cn("text-sm sm:text-base font-normal leading-relaxed mb-4", isCenter ? "text-white" : "text-gray-900")}>
+          "{testimonial.quote}"
+        </h3>
+
+        {/* Author Info */}
+        <div
+          className={cn(
+            "absolute bottom-8 left-8 right-8",
+            isCenter ? "text-gray-300" : "text-gray-600",
+          )}
+        >
+          <p className="text-sm font-bold mb-1">
+            {testimonial.name}
+          </p>
+          <p className="text-xs italic">
+            {testimonial.role}
+          </p>
+          <p className={cn("text-xs mt-1 font-semibold", isCenter ? "text-emerald-400" : "text-emerald")}>
+            📍 {testimonial.asal}
+          </p>
+        </div>
       </div>
     </div>
   )
