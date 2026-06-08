@@ -164,28 +164,28 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-24 left-1/2 -translate-x-1/2 w-[90%] bg-white/95 backdrop-blur-md z-40 rounded-3xl border border-gray-100 p-6 shadow-2xl md:hidden"
+            className="fixed top-24 left-4 w-[95%] max-w-xs bg-white/95 backdrop-blur-md z-40 rounded-3xl border border-gray-100 px-4 py-5 shadow-2xl md:hidden"
           >
-            <div className="flex flex-col gap-4 text-center">
+            <div className="flex flex-col gap-2.5 items-center">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <button
                     key={item.name}
                     onClick={() => handleNavigation(item.href)}
-                    className={`font-medium py-2 text-base transition-all pb-2 ${isActive
-                      ? 'text-emerald border-b-2 border-emerald'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                    className={`font-medium py-3 px-4 text-sm transition-all rounded-xl w-full text-center ${isActive
+                      ? 'text-emerald bg-emerald/10 border-2 border-emerald'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-2 border-transparent'
                       }`}
                   >
                     {item.name}
                   </button>
                 )
               })}
-              <hr className="my-2 border-gray-100" />
+              <hr className="my-1 border-gray-200 w-full" />
               <button
                 onClick={() => handleAnchorClick("#gabung")}
-                className="bg-gold text-emerald-deeper hover:bg-gold/90 py-3 rounded-full font-semibold text-sm tracking-wider uppercase transition-colors"
+                className="bg-gold text-emerald-deeper hover:bg-gold/90 py-3 px-4 rounded-full font-semibold text-xs tracking-wider uppercase transition-colors w-full"
               >
                 Gabung Sekarang
               </button>
