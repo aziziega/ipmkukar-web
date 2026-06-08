@@ -41,7 +41,7 @@ export default function Navbar() {
   const navItems = [
     { name: "Home", href: "/home" },
     { name: "Visi & Misi", href: "/visi-misi" },
-    { name: "Struktur", href: "/struktur" },
+    { name: "Struktur Kepengurusan", href: "/struktur" },
   ]
 
   const scrollToSection = (href: string) => {
@@ -125,11 +125,10 @@ export default function Navbar() {
               <button
                 key={item.name}
                 onClick={() => handleNavigation(item.href)}
-                className={`transition-all duration-300 font-medium text-sm tracking-wide pb-1 ${
-                  isActive
-                    ? 'text-emerald border-b-2 border-emerald'
-                    : 'text-gray-500 hover:text-gray-900 border-b-2 border-transparent'
-                }`}
+                className={`transition-all duration-300 font-medium text-sm tracking-wide pb-1 ${isActive
+                  ? 'text-emerald border-b-2 border-emerald'
+                  : 'text-gray-500 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
               >
                 {item.name}
               </button>
@@ -174,11 +173,10 @@ export default function Navbar() {
                   <button
                     key={item.name}
                     onClick={() => handleNavigation(item.href)}
-                    className={`font-medium py-2 text-base transition-all pb-2 ${
-                      isActive
-                        ? 'text-emerald border-b-2 border-emerald'
-                        : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
-                    }`}
+                    className={`font-medium py-2 text-base transition-all pb-2 ${isActive
+                      ? 'text-emerald border-b-2 border-emerald'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      }`}
                   >
                     {item.name}
                   </button>
