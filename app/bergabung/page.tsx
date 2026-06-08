@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import Navbar from "@/components/Navbar"
 import { ArrowLeft, Check } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
@@ -27,12 +26,12 @@ export default function BergabungPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const message = `Halo! Saya ingin mendaftar sebagai anggota IPM Kukar Yogyakarta\n\nNama: ${formData.nama}\nAsal: ${formData.asal}\nUniversitas: ${formData.universitas}\nNo. WhatsApp: ${formData.whatsapp}`
-    
+
     const whatsappNumber = "6281234567890"
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
-    
+
     window.open(whatsappUrl, "_blank")
   }
 
@@ -45,13 +44,11 @@ export default function BergabungPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-surface via-white to-surface">
-      <Navbar />
-      
-      <div className="container mx-auto px-6 py-24 md:py-32">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
         {/* Back Button */}
-        <Link href="/" className="inline-flex items-center gap-2 text-emerald hover:text-emerald-dark transition-colors mb-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-emerald hover:text-emerald-dark transition-colors mb-8 hover:gap-3 duration-300">
           <ArrowLeft size={20} />
-          <span className="font-semibold">Kembali ke Beranda</span>
+          <span className="font-semibold text-sm sm:text-base">Kembali ke Beranda</span>
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
@@ -59,15 +56,15 @@ export default function BergabungPage() {
           <div className="space-y-8">
             {/* Logo & Header */}
             <div className="flex items-center gap-4 mb-6">
-              <Image 
-                src="/logo/logo-IPM.webp" 
-                alt="IPM Kukar Logo" 
-                width={80} 
+              <Image
+                src="/logo/logo-IPM.webp"
+                alt="IPM Kukar Logo"
+                width={80}
                 height={80}
                 className="object-contain"
               />
               <div>
-                <h1 className="text-4xl md:text-5xl font-black text-text-primary leading-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-tight">
                   Bergabung Bersama Kami
                 </h1>
                 <p className="text-emerald font-bold text-lg mt-2">IPM Kukar Yogyakarta</p>
@@ -104,11 +101,11 @@ export default function BergabungPage() {
             {/* Trust Indicators */}
             <div className="grid grid-cols-3 gap-4 pt-4">
               <div className="text-center">
-                <div className="text-3xl font-black text-emerald">150+</div>
+                <div className="text-3xl font-black text-emerald">30+</div>
                 <div className="text-xs text-text-secondary font-semibold">Anggota Aktif</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-black text-emerald">30+</div>
+                <div className="text-3xl font-black text-emerald">10+</div>
                 <div className="text-xs text-text-secondary font-semibold">Kegiatan/Tahun</div>
               </div>
               <div className="text-center">

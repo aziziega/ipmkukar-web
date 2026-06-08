@@ -4,7 +4,7 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'IPM-Kukar | Yogya',
+  title: 'IPM-Kukar | Yogyakarta',
   description: 'Ikatan Pelajar Mahasiswa Kutai Kartanegara Yogyakarta - Wadah berhimpun mahasiswa Kukar di Yogyakarta',
   icons: {
     icon: '/logo/logo-IPM.webp',

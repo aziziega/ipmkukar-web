@@ -57,16 +57,16 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
           height: 2,
         }}
       />
-      
+
       {/* Initial Badge */}
       <div className="mb-4">
         <div className={cn(
           "w-14 h-14 rounded-lg bg-gradient-to-br flex items-center justify-center shadow-lg transition-transform duration-300",
           testimonial.color
         )}
-        style={{
-          boxShadow: "3px 3px 0px hsl(var(--background))",
-        }}
+          style={{
+            boxShadow: "3px 3px 0px hsl(var(--background))",
+          }}
         >
           <span className="text-white text-xl font-black">
             {testimonial.initials}
@@ -262,9 +262,8 @@ export default function TestimonialsSection() {
           <h2 className="text-4xl md:text-6xl font-black tracking-tight text-text-primary mb-6">
             Lihat Apa Kata{" "}
             <span className="bg-gradient-to-r from-emerald to-emerald-dark bg-clip-text text-transparent">
-              ALUMNI
+              ALUMNI.
             </span>{" "}
-            Kami
           </h2>
           <p className="text-xl md:text-2xl text-text-secondary max-w-3xl mx-auto leading-relaxed">
             Cerita nyata dari mahasiswa dan alumni Kukar yang telah merasakan kehangatan keluarga besar IPM Kukar Yogyakarta.

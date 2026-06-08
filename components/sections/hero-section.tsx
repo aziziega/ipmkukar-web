@@ -184,8 +184,8 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Slider Navigation - Bottom Center */}
-      <motion.div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 " variants={navVariants} initial="hidden" animate="visible">
-        <div className="flex items-center space-x-4">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+        <motion.div className="flex items-center space-x-4" variants={navVariants} initial="hidden" animate="visible">
           {/* Previous Arrow */}
           <button
             onClick={prevSlide}
@@ -216,8 +216,8 @@ export default function HeroSection() {
           >
             <ChevronRight size={24} />
           </button>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   )
 }

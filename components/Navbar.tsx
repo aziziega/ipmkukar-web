@@ -23,11 +23,9 @@ export default function Navbar() {
   }, [])
 
   const navItems = [
-    { name: "Tentang", href: "#tentang" },
-    { name: "Struktur", href: "#struktur" },
-    { name: "Program Kerja", href: "#proker" },
-    { name: "Kegiatan", href: "#kegiatan" },
-    { name: "Kontak", href: "#kontak" },
+    { name: "Home", href: "/home" },
+    { name: "Visi & Misi", href: "/visi-misi" },
+    { name: "Struktur", href: "/struktur" },
   ]
 
   const scrollToSection = (href: string) => {
@@ -60,7 +58,7 @@ export default function Navbar() {
       >
         {/* Brand / Logo */}
         <button
-          onClick={() => scrollToSection("#hero")}
+          onClick={() => scrollToSection("/home")}
           className="flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
           <Image
@@ -81,7 +79,13 @@ export default function Navbar() {
           {navItems.map((item) => (
             <button
               key={item.name}
-              onClick={() => scrollToSection(item.href)}
+              onClick={() => {
+                if (item.href.startsWith('/')) {
+                  window.location.href = item.href
+                } else {
+                  scrollToSection(item.href)
+                }
+              }}
               className="text-gray-500 hover:text-gray-900 transition-colors duration-300 font-medium text-sm tracking-wide"
             >
               {item.name}
@@ -123,7 +127,13 @@ export default function Navbar() {
               {navItems.map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => scrollToSection(item.href)}
+                  onClick={() => {
+                    if (item.href.startsWith('/')) {
+                      window.location.href = item.href
+                    } else {
+                      scrollToSection(item.href)
+                    }
+                  }}
                   className="text-gray-600 hover:text-gray-900 font-medium py-2 text-base transition-colors"
                 >
                   {item.name}
