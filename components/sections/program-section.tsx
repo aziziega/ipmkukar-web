@@ -144,13 +144,13 @@ function TimelineItem({ entry, index }: TimelineItemProps) {
 
                 {/* Slide Indicators - Flexible layout for any number of images */}
                 {entry.images.length > 1 && (
-                  <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-wrap items-center justify-center gap-1.5 md:gap-2 max-w-[90%] md:max-w-md">
+                  <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-wrap items-center justify-center gap-2 md:gap-2.5 max-w-[90%] md:max-w-md">
                     {entry.images.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setCurrentSlide(idx)}
                         className={cn(
-                          "rounded-full transition-all duration-300 p-1.5 -m-1.5 flex-shrink-0",
+                          "rounded-full transition-all duration-300 flex-shrink-0",
                           entry.images.length >= 5 ? "w-1.5 h-1.5 md:w-2 md:h-2" : "w-2 h-2 md:w-2.5 md:h-2.5",
                           idx === currentSlide
                             ? entry.images.length >= 5 

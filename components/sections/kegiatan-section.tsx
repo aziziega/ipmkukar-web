@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 
 export default function KegiatanSection() {
@@ -113,18 +114,20 @@ export default function KegiatanSection() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-emerald text-emerald hover:bg-emerald hover:text-white font-semibold px-8 transition-all duration-300"
+          <Link href="/kegiatan">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Lihat Semua Kegiatan
-            </Button>
-          </motion.div>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-2 border-emerald text-emerald hover:bg-emerald hover:text-white font-semibold px-8 transition-all duration-300"
+              >
+                Lihat Semua Kegiatan
+              </Button>
+            </motion.div>
+          </Link>
         </motion.div>
       </div>
     </section>

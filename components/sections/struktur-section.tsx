@@ -8,6 +8,9 @@ import { motion } from "framer-motion"
 export default function StrukturSection() {
   return (
     <section id="struktur" className="relative pt-32 pb-20 bg-surface">
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-subtle opacity-20 pointer-events-none" />
+
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div
