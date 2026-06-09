@@ -8,13 +8,14 @@ import { cn } from "@/lib/utils"
 const SQRT_5000 = Math.sqrt(5000)
 
 interface Testimonial {
-  tempId: number
+  tempId: number | string
   name: string
   role: string
   asal: string
   quote: string
   initials: string
   color: string
+  photoUrl?: string
 }
 
 interface TestimonialCardProps {
@@ -64,20 +65,33 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
           }}
         />
 
-        {/* Initial Badge */}
+        {/* Photo or Initial Badge */}
         <div className="mb-3 md:mb-4 flex-shrink-0">
-          <div className={cn(
-            "w-12 h-12 md:w-14 md:h-14 rounded-lg bg-gradient-to-br flex items-center justify-center shadow-lg transition-transform duration-300",
-            testimonial.color
+          {testimonial.photoUrl ? (
+            // Show actual photo if available
+            <img
+              src={testimonial.photoUrl}
+              alt={testimonial.name}
+              className="w-12 h-12 md:w-14 md:h-14 rounded-lg object-cover shadow-lg"
+              style={{
+                boxShadow: "3px 3px 0px hsl(var(--background))",
+              }}
+            />
+          ) : (
+            // Fallback to initial badge if no photo
+            <div className={cn(
+              "w-12 h-12 md:w-14 md:h-14 rounded-lg bg-gradient-to-br flex items-center justify-center shadow-lg transition-transform duration-300",
+              testimonial.color
+            )}
+              style={{
+                boxShadow: "3px 3px 0px hsl(var(--background))",
+              }}
+            >
+              <span className="text-white text-lg md:text-xl font-black">
+                {testimonial.initials}
+              </span>
+            </div>
           )}
-            style={{
-              boxShadow: "3px 3px 0px hsl(var(--background))",
-            }}
-          >
-            <span className="text-white text-lg md:text-xl font-black">
-              {testimonial.initials}
-            </span>
-          </div>
         </div>
 
         {/* Quote Text - Flexible Height */}
@@ -109,8 +123,36 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
   )
 }
 
+// Helper: Generate initials from name
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}
+
+// Helper: Generate random color gradient
+function getRandomColor(): string {
+  const colors = [
+    "from-orange-400 to-orange-600",
+    "from-green-400 to-green-600",
+    "from-slate-700 to-slate-900",
+    "from-cyan-400 to-cyan-600",
+    "from-red-500 to-orange-600",
+    "from-purple-400 to-purple-600",
+    "from-blue-400 to-blue-600",
+    "from-pink-400 to-pink-600",
+    "from-yellow-400 to-yellow-600",
+    "from-indigo-400 to-indigo-600",
+  ]
+  return colors[Math.floor(Math.random() * colors.length)]
+}
+
 export default function TestimonialsSection() {
   const [cardSize, setCardSize] = useState(365)
+  const [rotationCounter, setRotationCounter] = useState(0)
   const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([
     {
       tempId: 0,
@@ -223,22 +265,76 @@ export default function TestimonialsSection() {
     },
   ])
 
-  const handleMove = (steps: number) => {
-    const newList = [...testimonialsList]
-    if (steps > 0) {
-      for (let i = steps; i > 0; i--) {
-        const item = newList.shift()
-        if (!item) return
-        newList.push({ ...item, tempId: Math.random() })
-      }
-    } else {
-      for (let i = steps; i < 0; i++) {
-        const item = newList.pop()
-        if (!item) return
-        newList.unshift({ ...item, tempId: Math.random() })
+  // Fetch testimonials from API
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await fetch('/api/testimonials')
+        const data = await response.json()
+
+        if (data.success && data.testimonials && data.testimonials.length > 0) {
+          // Map API data to component format
+          const mappedTestimonials = data.testimonials.map((t: any, index: number) => ({
+            tempId: `${t.id}-${index}`, // Use unique combination of id and index
+            name: t.name,
+            role: t.company ? `${t.position} | ${t.company}` : t.position,
+            asal: t.district || 'Kutai Kartanegara',
+            quote: t.quote,
+            initials: getInitials(t.name),
+            color: getRandomColor(),
+            photoUrl: t.photo_url,
+          }))
+
+          // Duplicate for smoother carousel (at least 6 items) with unique IDs
+          let finalList = [...mappedTestimonials]
+          if (mappedTestimonials.length < 6) {
+            const duplicated = mappedTestimonials.map((t, idx) => ({
+              ...t,
+              tempId: `${t.tempId}-dup-${idx}`, // Ensure unique keys for duplicates
+            }))
+            finalList = [...mappedTestimonials, ...duplicated]
+          }
+
+          setTestimonialsList(finalList)
+        }
+        // If API fails or returns empty, keep hardcoded fallback data
+      } catch (error) {
+        console.error('Failed to fetch testimonials:', error)
+        // Keep hardcoded fallback data
       }
     }
+
+    fetchTestimonials()
+  }, [])
+
+  const handleMove = (steps: number) => {
+    const newList = [...testimonialsList]
+    const newCounter = rotationCounter + 1
+
+    if (steps > 0) {
+      // Right arrow: move items from front to back
+      for (let i = 0; i < steps; i++) {
+        const item = newList.shift()
+        if (item) {
+          // Extract base ID to avoid nested suffixes
+          const baseId = String(item.tempId).split('-moved-')[0]
+          newList.push({ ...item, tempId: `${baseId}-moved-${newCounter}` })
+        }
+      }
+    } else {
+      // Left arrow: move items from back to front
+      for (let i = 0; i < Math.abs(steps); i++) {
+        const item = newList.pop()
+        if (item) {
+          // Extract base ID to avoid nested suffixes
+          const baseId = String(item.tempId).split('-moved-')[0]
+          newList.unshift({ ...item, tempId: `${baseId}-moved-${newCounter}` })
+        }
+      }
+    }
+
     setTestimonialsList(newList)
+    setRotationCounter(newCounter)
   }
 
   useEffect(() => {
