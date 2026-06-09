@@ -8,22 +8,46 @@ import Image from "next/image"
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [slides, setSlides] = useState<Array<{ image_url: string; title: string }>>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Placeholder images - user will replace with real IPM member photos
-  const slides = [
-    {
-      image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&h=1080&fit=crop",
-      alt: "IPM Kukar Members - Slide 1",
-    },
-    {
-      image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1920&h=1080&fit=crop",
-      alt: "IPM Kukar Members - Slide 2",
-    },
-    {
-      image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1920&h=1080&fit=crop",
-      alt: "IPM Kukar Members - Slide 3",
-    },
-  ]
+  // Fetch hero slides from API
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const response = await fetch('/api/hero-slides')
+        const data = await response.json()
+        
+        if (data.success && data.slides.length > 0) {
+          setSlides(data.slides.map((slide: any) => ({
+            image_url: slide.image_url,
+            title: slide.title,
+          })))
+        } else {
+          // Fallback to placeholder if no slides
+          setSlides([
+            {
+              image_url: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&h=1080&fit=crop",
+              title: "IPM Kukar Members - Slide 1",
+            },
+          ])
+        }
+      } catch (error) {
+        console.error('Error fetching hero slides:', error)
+        // Fallback to placeholder on error
+        setSlides([
+          {
+            image_url: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&h=1080&fit=crop",
+            title: "IPM Kukar Members - Slide 1",
+          },
+        ])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchSlides()
+  }, [])
 
   // Auto-play: change slide every 5 seconds
   useEffect(() => {
@@ -32,7 +56,7 @@ export default function HeroSection() {
     }, 5000) // 5 seconds
 
     return () => clearInterval(interval) // Cleanup on unmount
-  }, [])
+  }, [slides]) // Re-run when slides change
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
@@ -102,8 +126,8 @@ export default function HeroSection() {
               }`}
           >
             <Image
-              src={slide.image}
-              alt={slide.alt}
+              src={slide.image_url}
+              alt={slide.title}
               fill
               className="object-cover animate-hero-zoom"
               priority={index === 0}
