@@ -47,12 +47,37 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
 }
 
 export default function BergabungFooterSection() {
-  const stats = [
+  // State for statistics with fallback values
+  const [stats, setStats] = useState([
     { icon: Users, value: 30, suffix: "+", label: "Anggota Aktif" },
     { icon: TrendingUp, value: 10, suffix: "+", label: "Kegiatan/Tahun" },
     { icon: Calendar, value: 1000, suffix: "+", label: "Alumni Sejak 2002" },
     { icon: Award, value: 6, suffix: "", label: "Departemen Aktif" },
-  ]
+  ])
+
+  // Fetch statistics from API on mount
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const response = await fetch('/api/site-statistics')
+        const data = await response.json()
+        
+        if (data.success && data.data) {
+          setStats([
+            { icon: Users, value: data.data.active_members, suffix: "+", label: "Anggota Aktif" },
+            { icon: TrendingUp, value: data.data.activities_per_year, suffix: "+", label: "Kegiatan/Tahun" },
+            { icon: Calendar, value: data.data.total_alumni, suffix: "+", label: "Alumni Sejak 2002" },
+            { icon: Award, value: data.data.active_departments, suffix: "", label: "Departemen Aktif" },
+          ])
+        }
+      } catch (error) {
+        console.error('Failed to fetch statistics:', error)
+        // Keep fallback values on error
+      }
+    }
+
+    fetchStatistics()
+  }, [])
 
   const containerVariants = {
     hidden: { opacity: 0 },
