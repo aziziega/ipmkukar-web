@@ -7,6 +7,7 @@ import {
   setAuthCookie,
   isValidEmail,
 } from '@/lib/auth'
+import { logLogin, logLoginFailed, extractIpAddress } from '@/lib/activity-logger'
 
 // Initialize Supabase client with service role key
 const supabase = createClient(
@@ -55,6 +56,15 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (fetchError || !user) {
+      // Log failed login attempt
+      const ipAddress = extractIpAddress(request)
+      await logLoginFailed(
+        supabase,
+        email,
+        'User not found',
+        ipAddress || undefined
+      )
+      
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
@@ -73,6 +83,15 @@ export async function POST(request: NextRequest) {
     const isPasswordValid = await verifyPassword(password, user.password_hash)
 
     if (!isPasswordValid) {
+      // Log failed login attempt
+      const ipAddress = extractIpAddress(request)
+      await logLoginFailed(
+        supabase,
+        email,
+        'Invalid password',
+        ipAddress || undefined
+      )
+      
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
@@ -100,22 +119,9 @@ export async function POST(request: NextRequest) {
       .update({ last_login_at: new Date().toISOString() })
       .eq('id', user.id)
 
-    // Log activity
-    const clientIp = request.headers.get('x-forwarded-for') || 
-                     request.headers.get('x-real-ip') || 
-                     'unknown'
-
-    await supabase.from('activity_logs').insert({
-      user_id: user.id,
-      action: 'login',
-      entity_type: 'user',
-      entity_id: user.id,
-      details: {
-        email: user.email,
-        rememberMe,
-      },
-      ip_address: clientIp,
-    })
+    // Log successful login
+    const ipAddress = extractIpAddress(request)
+    await logLogin(supabase, user.id, user.email, ipAddress || undefined)
 
     // Return user data (without password hash)
     return NextResponse.json(

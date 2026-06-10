@@ -71,7 +71,7 @@ const navItems: NavItem[] = [
   },
   {
     title: "Activity Logs",
-    href: "/admin/dashboard/logs",
+    href: "/admin/dashboard/activity-logs",
     icon: FileText,
     superAdminOnly: true,
   },

@@ -6,6 +6,8 @@ import {
   generateUniqueFilename,
   validateImageFile,
 } from '@/lib/supabase-storage'
+import { logActivity, extractIpAddress } from '@/lib/activity-logger'
+import { ActivityAction, EntityType } from '@/types/activity-log'
 
 // Initialize Supabase client with service role key
 const supabase = createClient(
@@ -162,12 +164,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Log activity
-    await supabase.from('activity_logs').insert({
-      user_id: authResult.user?.id,
-      action: 'create',
-      entity_type: 'hero_slide',
+    const ipAddress = extractIpAddress(request)
+    await logActivity(supabase, {
+      user_id: authResult.user!.id,
+      action: ActivityAction.CREATE,
+      entity_type: EntityType.HERO_SLIDE,
       entity_id: newSlide.id,
-      description: `Created hero slide: ${title}`,
+      details: { title: title.trim(), order_index: finalOrderIndex },
+      ip_address: ipAddress || undefined,
     })
 
     return NextResponse.json(

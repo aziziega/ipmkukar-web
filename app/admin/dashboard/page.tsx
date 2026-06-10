@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -12,14 +13,30 @@ import {
 } from "lucide-react"
 
 export default function DashboardPage() {
-  // In production, these would be fetched from the database
+  const [activitiesCount, setActivitiesCount] = useState(0)
+
+  // Fetch real activities count
+  useEffect(() => {
+    const fetchActivitiesCount = async () => {
+      try {
+        const response = await fetch('/api/admin/activities?limit=1')
+        const data = await response.json()
+        setActivitiesCount(data.pagination?.total || 0)
+      } catch (error) {
+        console.error('Error fetching activities count:', error)
+      }
+    }
+    fetchActivitiesCount()
+  }, [])
+
+  // Stats - activities count is now real, others remain placeholder
   const stats = [
     {
       title: "Total Activities",
-      value: "18",
+      value: activitiesCount.toString(),
       icon: Calendar,
       description: "Published events",
-      trend: "+2 this month",
+      trend: "Real-time count",
       color: "text-blue-600",
       bgColor: "bg-blue-100",
     },

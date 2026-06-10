@@ -27,10 +27,17 @@ interface TestimonialCardProps {
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial, handleMove, cardSize }) => {
   const isCenter = position === 0
+  const absPosition = Math.abs(position)
+  
+  // Dynamic effects based on distance from center
+  const scale = isCenter ? 1 : Math.max(0.75, 1 - absPosition * 0.08)
+  const opacity = isCenter ? 1 : Math.max(0.3, 1 - absPosition * 0.15)
+  const blur = absPosition > 2 ? `blur(${Math.min(absPosition * 0.5, 2)}px)` : 'none'
+  
   return (
     <div
       onClick={() => handleMove(position)}
-      className="absolute left-1/2 top-1/2 cursor-pointer transition-all duration-500 ease-in-out"
+      className="absolute left-1/2 top-1/2 cursor-pointer"
       style={{
         width: cardSize,
         height: cardSize,
@@ -39,20 +46,24 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
           translateX(${(cardSize / 1.5) * position}px)
           translateY(${isCenter ? -65 : position % 2 ? 15 : -15}px)
           rotate(${isCenter ? 0 : position % 2 ? 2.5 : -2.5}deg)
+          scale(${scale})
         `,
-        zIndex: isCenter ? 10 : 0,
-        filter: isCenter ? "drop-shadow(0 15px 20px rgba(0, 0, 0, 0.08))" : "none",
+        opacity: opacity,
+        zIndex: isCenter ? 10 : Math.max(0, 5 - absPosition),
+        filter: isCenter ? "drop-shadow(0 15px 20px rgba(0, 0, 0, 0.08))" : blur,
+        transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
     >
       <div
         className={cn(
-          "relative w-full h-full border-2 p-5 md:p-6 transition-colors duration-500 ease-in-out flex flex-col",
+          "relative w-full h-full border-2 p-5 md:p-6 flex flex-col",
           isCenter
             ? "bg-slate-900 text-white border-slate-900"
             : "bg-white text-gray-900 border-gray-200 hover:border-emerald",
         )}
         style={{
           clipPath: `polygon(50px 0%, calc(100% - 50px) 0%, 100% 50px, 100% 100%, calc(100% - 50px) 100%, 50px 100%, 0 100%, 0 0)`,
+          transition: 'background-color 0.5s ease-in-out, border-color 0.5s ease-in-out',
         }}
       >
         <span
@@ -122,6 +133,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ position, testimonial
     </div>
   )
 }
+
 
 // Helper: Generate initials from name
 function getInitials(name: string): string {
@@ -288,7 +300,7 @@ export default function TestimonialsSection() {
           // Duplicate for smoother carousel (at least 6 items) with unique IDs
           let finalList = [...mappedTestimonials]
           if (mappedTestimonials.length < 6) {
-            const duplicated = mappedTestimonials.map((t, idx) => ({
+            const duplicated = mappedTestimonials.map((t: Testimonial, idx: number) => ({
               ...t,
               tempId: `${t.tempId}-dup-${idx}`, // Ensure unique keys for duplicates
             }))

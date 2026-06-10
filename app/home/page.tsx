@@ -6,6 +6,7 @@ import TentangSection from "@/components/sections/tentang-section"
 import ProgramSection from "@/components/sections/program-section"
 import TestimonialsSection from "@/components/sections/testimonials-section"
 import KegiatanSection from "@/components/sections/kegiatan-section"
+// import StrukturSection from "@/components/sections/struktur-section"
 import BergabungFooterSection from "@/components/sections/bergabung-footer-section"
 import "@/app/globals.css"
 
@@ -26,6 +27,9 @@ export default function Home() {
 
             {/* Kegiatan & Galeri Section */}
             <KegiatanSection />
+
+            {/* Struktur Organisasi Section */}
+            {/* <StrukturSection /> */}
 
             <TestimonialsSection />
 

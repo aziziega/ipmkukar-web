@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { requireAuth } from '@/lib/auth'
+import { logActivity, extractIpAddress } from '@/lib/activity-logger'
+import { ActivityAction, EntityType } from '@/types/activity-log'
 
 // Initialize Supabase client with service role key
 const supabase = createClient(
@@ -145,12 +147,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Log activity
-    await supabase.from('activity_logs').insert({
-      user_id: authResult.user?.id,
-      action: 'update',
-      entity_type: 'site_statistics',
+    const ipAddress = extractIpAddress(request)
+    await logActivity(supabase, {
+      user_id: authResult.user!.id,
+      action: ActivityAction.UPDATE,
+      entity_type: EntityType.STATISTICS,
       entity_id: updatedStats.id,
-      description: 'Updated site statistics',
+      details: {
+        updated_fields: Object.keys(body),
+        new_values: { active_members, activities_per_year, total_alumni, active_departments },
+      },
+      ip_address: ipAddress || undefined,
     })
 
     return NextResponse.json(

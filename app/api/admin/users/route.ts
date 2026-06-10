@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { requireAuth } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
+import { logUserCreated, extractIpAddress } from '@/lib/activity-logger'
+import { ActivityAction, EntityType } from '@/types/activity-log'
 
 // Initialize Supabase client with service role key
 const supabase = createClient(
@@ -196,13 +198,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Log activity
-    await supabase.from('activity_logs').insert({
-      user_id: authResult.user?.id,
-      action: 'create',
-      entity_type: 'user',
-      entity_id: newUser.id,
-      description: `Created new ${role} user: ${email}`,
-    })
+    const ipAddress = extractIpAddress(request)
+    await logUserCreated(
+      supabase,
+      authResult.user!.id,
+      newUser.id,
+      email,
+      name,
+      role,
+      ipAddress || undefined
+    )
 
     return NextResponse.json(
       {

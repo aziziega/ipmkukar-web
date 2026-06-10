@@ -18,7 +18,7 @@ const defaultTestimonials: Array<{
 
 interface TestimonialCardProps {
   position: number
-  testimonial: (typeof testimonials)[0]
+  testimonial: (typeof defaultTestimonials)[0]
   handleMove: (steps: number) => void
   cardSize: number
 }

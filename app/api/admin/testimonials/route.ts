@@ -7,6 +7,8 @@ import {
   generateUniqueTestimonialFilename,
   generateAvatarFromName,
 } from '@/lib/supabase-storage-testimonials'
+import { logActivity, extractIpAddress } from '@/lib/activity-logger'
+import { ActivityAction, EntityType } from '@/types/activity-log'
 
 // Initialize Supabase client with service role key
 const supabase = createClient(
@@ -188,12 +190,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Log activity
-    await supabase.from('activity_logs').insert({
-      user_id: authResult.user?.id,
-      action: 'create',
-      entity_type: 'testimonial',
+    const ipAddress = extractIpAddress(request)
+    await logActivity(supabase, {
+      user_id: authResult.user!.id,
+      action: ActivityAction.CREATE,
+      entity_type: EntityType.TESTIMONIAL,
       entity_id: newTestimonial.id,
-      description: `Created testimonial from ${name}`,
+      details: { name: name.trim(), position: position.trim(), company: company?.trim() },
+      ip_address: ipAddress || undefined,
     })
 
     return NextResponse.json(

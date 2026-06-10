@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { Department, ActivityType, ViewMode, ActivityFilters } from "@/types/activity"
-import { activitiesData } from "@/data/activities-data"
-import { filterActivities, sortActivities, getUniqueYears, paginateActivities } from "@/lib/activity-utils"
 import ActivitiesHeader from "@/components/kegiatan/activities-header"
 import ActivitiesFilters from "@/components/kegiatan/activities-filters"
 import GridView from "@/components/kegiatan/grid-view"
 import TimelineView from "@/components/kegiatan/timeline-view"
 import Footer from "@/components/footer"
+import { Loader2 } from "lucide-react"
 
 const ITEMS_PER_PAGE = 9
 
@@ -23,28 +22,56 @@ export default function KegiatanPage() {
     searchQuery: "",
   })
 
-  // Get available years from all activities
-  const availableYears = getUniqueYears(activitiesData)
+  // State for API data
+  const [activities, setActivities] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalActivities, setTotalActivities] = useState(0)
 
-  // Apply filters and search
-  const filteredActivities = filterActivities(activitiesData, {
-    ...filters,
-    searchQuery,
-  })
+  // Fetch activities from API
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setIsLoading(true)
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          limit: ITEMS_PER_PAGE.toString(),
+        })
 
-  // Sort by date (newest first)
-  const sortedActivities = sortActivities(filteredActivities, "date-desc")
+        if (filters.departments.length > 0) {
+          filters.departments.forEach(dept => params.append('department', dept))
+        }
+        if (filters.years.length > 0) {
+          filters.years.forEach(year => params.append('year', year.toString()))
+        }
+        if (filters.types.length > 0) {
+          filters.types.forEach(type => params.append('type', type))
+        }
+        if (searchQuery) {
+          params.append('search', searchQuery)
+        }
 
-  // Paginate for grid view
-  const { items: paginatedActivities, totalPages } = paginateActivities(
-    sortedActivities,
-    currentPage,
-    ITEMS_PER_PAGE
-  )
+        const response = await fetch(`/api/activities?${params}`)
+        if (!response.ok) throw new Error('Failed to fetch activities')
 
-  // Statistics
-  const totalActivities = activitiesData.length
-  const activeDepartments = new Set(activitiesData.map((a) => a.department)).size
+        const data = await response.json()
+        setActivities(data.activities || [])
+        setTotalPages(data.pagination.total_pages)
+        setTotalActivities(data.pagination.total)
+      } catch (error) {
+        console.error('Error fetching activities:', error)
+        setActivities([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchActivities()
+  }, [currentPage, filters, searchQuery])
+
+  // Calculate statistics from fetched data
+  const availableYears = Array.from(new Set(activities.map(a => a.year))).sort((a, b) => b - a)
+  const activeDepartments = new Set(activities.map(a => a.department)).size
   const activeYears = availableYears.length
 
   // Active filter count
