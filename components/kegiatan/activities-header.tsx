@@ -57,50 +57,6 @@ export default function ActivitiesHeader({
           </p>
         </motion.div>
 
-        {/* Statistics Cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto mb-8"
-        >
-          <div className="bg-white rounded-xl p-4 md:p-6 border border-border-custom text-center">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-emerald/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <ActivityIcon className="w-5 h-5 md:w-6 md:h-6 text-emerald" />
-            </div>
-            <div className="text-2xl md:text-3xl font-black text-emerald mb-1">
-              {totalActivities}
-            </div>
-            <div className="text-xs md:text-sm text-text-secondary font-semibold">
-              Total Kegiatan
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 md:p-6 border border-border-custom text-center">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <Users className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
-            </div>
-            <div className="text-2xl md:text-3xl font-black text-blue-500 mb-1">
-              {activeDepartments}
-            </div>
-            <div className="text-xs md:text-sm text-text-secondary font-semibold">
-              Departemen Aktif
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 md:p-6 border border-border-custom text-center">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-amber-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <Calendar className="w-5 h-5 md:w-6 md:h-6 text-amber-500" />
-            </div>
-            <div className="text-2xl md:text-3xl font-black text-amber-500 mb-1">
-              {activeYears}
-            </div>
-            <div className="text-xs md:text-sm text-text-secondary font-semibold">
-              Tahun Berkegiatan
-            </div>
-          </div>
-        </motion.div>
-
         {/* Search and View Toggle */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

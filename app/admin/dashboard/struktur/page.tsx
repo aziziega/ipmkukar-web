@@ -2,12 +2,22 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Edit, Loader2, Users } from "lucide-react"
+import { Edit, Loader2, Users, Trash2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface OrganizationalStructure {
   id: string
@@ -39,6 +49,7 @@ export default function StrukturPage() {
 
   const [structure, setStructure] = useState<OrganizationalStructure | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   useEffect(() => {
     fetchStructure()
@@ -71,6 +82,38 @@ export default function StrukturPage() {
     }
   }
 
+  const handleDelete = async () => {
+    if (!structure) return
+
+    try {
+      const response = await fetch('/api/admin/struktur', {
+        method: 'DELETE',
+      })
+
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error(data.error || 'Gagal menghapus struktur organisasi')
+      }
+
+      toast({
+        title: "Berhasil",
+        description: "Struktur organisasi berhasil dihapus",
+      })
+
+      fetchStructure()
+    } catch (error: any) {
+      console.error('Error deleting structure:', error)
+      toast({
+        title: "Gagal Menghapus",
+        description: error.message || "Gagal menghapus struktur organisasi",
+        variant: "destructive",
+      })
+    } finally {
+      setShowDeleteDialog(false)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -86,13 +129,24 @@ export default function StrukturPage() {
           <h1 className="text-3xl font-bold text-gray-900">Struktur Organisasi</h1>
           <p className="text-gray-600 mt-1">Manage organizational structure and leadership</p>
         </div>
-        <Button
-          onClick={() => router.push('/admin/dashboard/struktur/edit')}
-          className="bg-emerald-600 hover:bg-emerald-700"
-        >
-          <Edit className="w-4 h-4 mr-2" />
-          {structure ? 'Edit Structure' : 'Create Structure'}
-        </Button>
+        <div className="flex gap-3">
+          {structure && (
+            <Button
+              onClick={() => setShowDeleteDialog(true)}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete Structure
+            </Button>
+          )}
+          <Button
+            onClick={() => router.push('/admin/dashboard/struktur/edit')}
+            className="bg-emerald-600 hover:bg-emerald-700"
+          >
+            <Edit className="w-4 h-4 mr-2" />
+            {structure ? 'Edit Structure' : 'Create Structure'}
+          </Button>
+        </div>
       </div>
 
       {!structure ? (
@@ -298,6 +352,27 @@ export default function StrukturPage() {
           </Card>
         </>
       )}
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Struktur Organisasi</AlertDialogTitle>
+            <AlertDialogDescription>
+              Yakin ingin menghapus struktur organisasi periode <strong>{structure?.period}</strong>?
+              Tindakan ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

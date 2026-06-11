@@ -16,9 +16,9 @@ export async function GET(request: NextRequest) {
   try {
     // Get query parameters
     const { searchParams } = new URL(request.url)
-    const department = searchParams.get('department')
-    const year = searchParams.get('year')
-    const type = searchParams.get('type')
+    const departments = searchParams.getAll('department')
+    const years = searchParams.getAll('year')
+    const types = searchParams.getAll('type')
     const search = searchParams.get('search')
     const featured = searchParams.get('featured') === 'true'
     const page = parseInt(searchParams.get('page') || '1')
@@ -32,9 +32,9 @@ export async function GET(request: NextRequest) {
       .order('date', { ascending: false })
 
     // Apply filters
-    if (department) query = query.eq('department', department)
-    if (year) query = query.eq('year', parseInt(year))
-    if (type) query = query.eq('type', type)
+    if (departments.length > 0) query = query.in('department', departments)
+    if (years.length > 0) query = query.in('year', years.map(y => parseInt(y)))
+    if (types.length > 0) query = query.in('type', types)
     if (featured) query = query.eq('is_featured', true)
     if (search) {
       query = query.or(

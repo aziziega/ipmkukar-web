@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -17,7 +18,7 @@ export default function HeroSection() {
       try {
         const response = await fetch('/api/hero-slides')
         const data = await response.json()
-        
+
         if (data.success && data.slides.length > 0) {
           setSlides(data.slides.map((slide: any) => ({
             image_url: slide.image_url,
@@ -179,17 +180,27 @@ export default function HeroSection() {
 
         {/* CTA Buttons */}
         <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16" variants={buttonVariants}>
-          <Button
-            size="lg"
-            className="bg-gold hover:bg-gold-light text-emerald-deeper font-bold px-10 py-6 text-lg rounded-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
-            onClick={() => scrollToSection("#gabung")}
-          >
-            Bergabung Sekarang →
-          </Button>
+          <Link href="/bergabung">
+            <Button
+              size="lg"
+              className="bg-gold hover:bg-gold-light text-emerald-deeper font-bold px-8 py-6 text-lg rounded-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+            >
+              Bergabung Sekarang →
+            </Button>
+          </Link>
+          <Link href="/datakukar">
+            <Button
+              size="lg"
+              variant="outline"
+              className="bg-blue-600 text-white border-none hover:bg-blue-700 font-bold px-8 py-6 text-lg rounded-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+            >
+              Data Mahasiswa Kukar
+            </Button>
+          </Link>
           <Button
             size="lg"
             variant="outline"
-            className="bg-emerald text-white border-none hover:bg-white hover:text-emerald-deeper font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300 hover:shadow-2xl hover:scale-105"
+            className="bg-emerald text-white border-none hover:bg-white hover:text-emerald-deeper font-bold px-8 py-6 text-lg rounded-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
             onClick={() => scrollToSection("#tentang")}
           >
             Kenali Kami

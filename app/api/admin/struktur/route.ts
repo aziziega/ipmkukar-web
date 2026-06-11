@@ -277,3 +277,70 @@ export async function PUT(request: NextRequest) {
     )
   }
 }
+
+/**
+ * DELETE /api/admin/struktur
+ * Admin only - Delete organizational structure
+ */
+export async function DELETE(request: NextRequest) {
+  try {
+    // Verify authentication
+    const authResult = await requireAuth(request)
+    if (!authResult.authorized) {
+      return NextResponse.json(
+        { success: false, error: authResult.error },
+        { status: 401 }
+      )
+    }
+
+    // Fetch existing structure
+    const { data: existingStructure, error: fetchError } = await supabase
+      .from('organizational_structure')
+      .select('*')
+      .eq('is_active', true)
+      .single()
+
+    if (fetchError || !existingStructure) {
+      return NextResponse.json(
+        { success: false, error: 'No active organizational structure found' },
+        { status: 404 }
+      )
+    }
+
+    // Delete the structure
+    const { error: deleteError } = await supabase
+      .from('organizational_structure')
+      .delete()
+      .eq('id', existingStructure.id)
+
+    if (deleteError) {
+      console.error('Error deleting organizational structure:', deleteError)
+      return NextResponse.json(
+        { success: false, error: 'Failed to delete organizational structure' },
+        { status: 500 }
+      )
+    }
+
+    // Log activity
+    const ipAddress = extractIpAddress(request)
+    await logActivity(supabase, {
+      user_id: authResult.user!.id,
+      action: ActivityAction.DELETE,
+      entity_type: EntityType.ORGANIZATIONAL_STRUCTURE,
+      entity_id: existingStructure.id,
+      details: { period: existingStructure.period },
+      ip_address: ipAddress || undefined,
+    })
+
+    return NextResponse.json(
+      { success: true },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.error('Struktur delete exception:', error)
+    return NextResponse.json(
+      { success: false, error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}

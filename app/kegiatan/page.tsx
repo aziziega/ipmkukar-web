@@ -28,6 +28,11 @@ export default function KegiatanPage() {
   const [totalPages, setTotalPages] = useState(1)
   const [totalActivities, setTotalActivities] = useState(0)
 
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [])
+
   // Fetch activities from API
   useEffect(() => {
     const fetchActivities = async () => {
@@ -173,15 +178,19 @@ export default function KegiatanPage() {
 
             {/* Content Area */}
             <main className="flex-1">
-              {viewMode === "grid" ? (
+              {isLoading ? (
+                <div className="flex items-center justify-center py-20">
+                  <Loader2 className="w-8 h-8 animate-spin text-emerald" />
+                </div>
+              ) : viewMode === "grid" ? (
                 <GridView
-                  activities={paginatedActivities}
+                  activities={activities}
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
                 />
               ) : (
-                <TimelineView activities={sortedActivities} />
+                <TimelineView activities={activities} />
               )}
             </main>
           </div>

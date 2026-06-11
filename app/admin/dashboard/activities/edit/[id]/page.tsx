@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, use } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -35,7 +35,8 @@ interface Activity {
   created_at: string
 }
 
-export default function EditActivityPage({ params }: { params: { id: string } }) {
+export default function EditActivityPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -66,7 +67,7 @@ export default function EditActivityPage({ params }: { params: { id: string } })
     const fetchActivity = async () => {
       try {
         setIsLoading(true)
-        const response = await fetch(`/api/admin/activities/${params.id}`)
+        const response = await fetch(`/api/admin/activities/${id}`)
         if (!response.ok) throw new Error("Failed to fetch activity")
 
         const data = await response.json()
@@ -92,7 +93,7 @@ export default function EditActivityPage({ params }: { params: { id: string } })
     }
 
     fetchActivity()
-  }, [params.id])
+  }, [id])
 
   // Validate form
   const validateForm = (): boolean => {
@@ -222,7 +223,7 @@ export default function EditActivityPage({ params }: { params: { id: string } })
         formData.append(`new_image_${index}`, image)
       })
 
-      const response = await fetch(`/api/admin/activities/${params.id}`, {
+      const response = await fetch(`/api/admin/activities/${id}`, {
         method: "PUT",
         body: formData,
       })
@@ -249,7 +250,7 @@ export default function EditActivityPage({ params }: { params: { id: string } })
     }
 
     try {
-      const response = await fetch(`/api/admin/activities/${params.id}`, {
+      const response = await fetch(`/api/admin/activities/${id}`, {
         method: "DELETE",
       })
 

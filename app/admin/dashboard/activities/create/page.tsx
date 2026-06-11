@@ -36,6 +36,7 @@ export default function CreateActivityPage() {
   const [isFeatured, setIsFeatured] = useState(false)
   const [images, setImages] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
+  const [isDragging, setIsDragging] = useState(false)
 
   // Validation errors
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -62,6 +63,35 @@ export default function CreateActivityPage() {
 
     if (!date) {
       newErrors.date = "Date is required"
+    } else {
+      // Validate DD/MM/YYYY format
+      const dateParts = date.split('/')
+      if (dateParts.length !== 3) {
+        newErrors.date = "Date must be in DD/MM/YYYY format"
+      } else {
+        const [day, month, year] = dateParts
+        const dayNum = parseInt(day)
+        const monthNum = parseInt(month)
+        const yearNum = parseInt(year)
+        
+        if (isNaN(dayNum) || isNaN(monthNum) || isNaN(yearNum)) {
+          newErrors.date = "Invalid date format"
+        } else if (day.length !== 2 || month.length !== 2 || year.length !== 4) {
+          newErrors.date = "Date must be in DD/MM/YYYY format (e.g., 25/12/2024)"
+        } else if (dayNum < 1 || dayNum > 31) {
+          newErrors.date = "Day must be between 01 and 31"
+        } else if (monthNum < 1 || monthNum > 12) {
+          newErrors.date = "Month must be between 01 and 12"
+        } else if (yearNum < 1900 || yearNum > 2100) {
+          newErrors.date = "Year must be between 1900 and 2100"
+        } else {
+          // Validate actual date (e.g., not 31/02/2024)
+          const testDate = new Date(yearNum, monthNum - 1, dayNum)
+          if (testDate.getDate() !== dayNum || testDate.getMonth() !== monthNum - 1 || testDate.getFullYear() !== yearNum) {
+            newErrors.date = "Invalid date (e.g., 31/02/2024 doesn't exist)"
+          }
+        }
+      }
     }
 
     if (!location.trim()) {
@@ -80,12 +110,38 @@ export default function CreateActivityPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  // Handle image upload
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files) return
+  // Format date input as DD/MM/YYYY
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '') // Remove non-digits
+    
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2)
+    }
+    if (value.length >= 5) {
+      value = value.slice(0, 5) + '/' + value.slice(5)
+    }
+    if (value.length > 10) {
+      value = value.slice(0, 10)
+    }
+    
+    setDate(value)
+  }
 
-    const fileArray = Array.from(files)
+  // Convert DD/MM/YYYY to YYYY-MM-DD for API
+  const formatDateForAPI = (dateStr: string): string => {
+    const parts = dateStr.split('/')
+    if (parts.length === 3) {
+      const [day, month, year] = parts
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+    }
+    return dateStr
+  }
+
+  // Handle image upload (shared by click and drag-drop)
+  const processFiles = (fileList: FileList | null) => {
+    if (!fileList) return
+
+    const fileArray = Array.from(fileList)
     const totalImages = images.length + fileArray.length
 
     if (totalImages > 5) {
@@ -96,12 +152,19 @@ export default function CreateActivityPage() {
       return
     }
 
-    // Validate file sizes
+    // Validate file sizes and types
     for (const file of fileArray) {
       if (file.size > 5 * 1024 * 1024) {
         setErrors((prev) => ({
           ...prev,
           images: `${file.name} exceeds 5MB limit`,
+        }))
+        return
+      }
+      if (!file.type.startsWith('image/')) {
+        setErrors((prev) => ({
+          ...prev,
+          images: `${file.name} is not an image file`,
         }))
         return
       }
@@ -124,6 +187,38 @@ export default function CreateActivityPage() {
       const { images, ...rest } = prev
       return rest
     })
+  }
+
+  // Handle image upload from file input
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    processFiles(e.target.files)
+  }
+
+  // Drag and drop handlers
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+    
+    const files = e.dataTransfer.files
+    processFiles(files)
   }
 
   // Remove image
@@ -150,7 +245,7 @@ export default function CreateActivityPage() {
       formData.append("description", description.trim())
       formData.append("department", department)
       formData.append("type", type)
-      formData.append("date", date)
+      formData.append("date", formatDateForAPI(date))
       formData.append("location", location.trim())
       formData.append("participants", participants)
       formData.append("is_published", isPublished.toString())
@@ -320,11 +415,16 @@ export default function CreateActivityPage() {
                   </Label>
                   <Input
                     id="date"
-                    type="date"
+                    type="text"
                     value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    onChange={handleDateChange}
+                    placeholder="Tanggal/Bulan/Tahun"
+                    maxLength={10}
                     className={errors.date ? "border-red-500" : ""}
                   />
+                  <p className="text-xs text-gray-500">
+                    Contoh: 25/12/2024
+                  </p>
                   {errors.date && (
                     <p className="text-sm text-red-600">{errors.date}</p>
                   )}
@@ -372,7 +472,17 @@ export default function CreateActivityPage() {
                 <Label>
                   Gambar (Maks 5, 5MB per gambar)
                 </Label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                <div 
+                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                    isDragging 
+                      ? 'border-emerald bg-emerald/5' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragEnter={handleDragEnter}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
                   <input
                     type="file"
                     accept="image/jpeg,image/jpg,image/png,image/webp"
@@ -386,9 +496,11 @@ export default function CreateActivityPage() {
                     htmlFor="image-upload"
                     className="cursor-pointer flex flex-col items-center"
                   >
-                    <Upload className="w-12 h-12 text-gray-400 mb-2" />
+                    <Upload className={`w-12 h-12 mb-2 ${
+                      isDragging ? 'text-emerald' : 'text-gray-400'
+                    }`} />
                     <p className="text-sm text-gray-600 mb-1">
-                      Klik untuk upload atau drag and drop
+                      {isDragging ? 'Lepaskan file di sini' : 'Klik untuk upload atau drag and drop'}
                     </p>
                     <p className="text-xs text-gray-500">
                       JPG, PNG, WebP (maks 5MB per gambar)

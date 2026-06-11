@@ -22,7 +22,7 @@ const supabase = createClient(
 )
 
 interface RouteContext {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 /**
@@ -43,7 +43,7 @@ export async function GET(
       )
     }
 
-    const { id } = context.params
+    const { id } = await context.params
 
     // Fetch activity with creator info
     const { data: activity, error } = await supabase
@@ -90,7 +90,7 @@ export async function PUT(
       )
     }
 
-    const { id } = context.params
+    const { id } = await context.params
 
     // Fetch existing activity
     const { data: existingActivity, error: fetchError } = await supabase
@@ -285,7 +285,7 @@ export async function DELETE(
       )
     }
 
-    const { id } = context.params
+    const { id } = await context.params
 
     // Fetch activity to get images for deletion
     const { data: activity, error: fetchError } = await supabase

@@ -31,6 +31,17 @@ import {
   ActivityType,
   DEPARTMENT_COLORS,
 } from "@/types/activity"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { useToast } from "@/hooks/use-toast"
 
 interface Activity {
   id: string
@@ -65,6 +76,7 @@ export default function ActivitiesPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalActivities, setTotalActivities] = useState(0)
+  const [deleteActivity, setDeleteActivity] = useState<Activity | null>(null)
 
   // Stats
   const [statsByDepartment, setStatsByDepartment] = useState<Record<string, number>>({})
@@ -138,21 +150,31 @@ export default function ActivitiesPage() {
     }
   }
 
-  const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Are you sure you want to delete "${title}"? This will also delete all associated images.`)) {
-      return
-    }
+  const handleDelete = async () => {
+    if (!deleteActivity) return
 
+    const { toast } = useToast()
     try {
-      const response = await fetch(`/api/admin/activities/${id}`, {
+      const response = await fetch(`/api/admin/activities/${deleteActivity.id}`, {
         method: "DELETE",
       })
 
       if (!response.ok) throw new Error("Failed to delete activity")
+      
+      toast({
+        title: "Berhasil",
+        description: "Kegiatan berhasil dihapus",
+      })
       fetchActivities()
     } catch (err) {
       console.error("Error deleting activity:", err)
-      alert("Failed to delete activity")
+      toast({
+        title: "Gagal Menghapus",
+        description: "Gagal menghapus kegiatan",
+        variant: "destructive",
+      })
+    } finally {
+      setDeleteActivity(null)
     }
   }
 
@@ -552,9 +574,7 @@ export default function ActivitiesPage() {
                               <Button
                                 size="sm"
                                 variant="ghost"
-                                onClick={() =>
-                                  handleDelete(activity.id, activity.title)
-                                }
+                                onClick={() => setDeleteActivity(activity)}
                                 className="text-red-600 hover:text-red-700"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -599,6 +619,27 @@ export default function ActivitiesPage() {
           </CardContent>
         </Card>
       </motion.div>
+
+      <AlertDialog open={!!deleteActivity} onOpenChange={() => setDeleteActivity(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Kegiatan</AlertDialogTitle>
+            <AlertDialogDescription>
+              Yakin ingin menghapus kegiatan <strong>{deleteActivity?.title}</strong>?
+              Semua gambar terkait juga akan dihapus. Tindakan ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

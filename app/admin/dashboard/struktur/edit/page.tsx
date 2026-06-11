@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Loader2, Save, X, Upload, User } from "lucide-react"
+import { Loader2, Save, X, Upload, User, Trash2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -183,6 +183,36 @@ export default function EditStrukturPage() {
     }
   }
 
+  const handleDeletePhoto = (position: string) => {
+    // Clear both the photo file and preview based on position
+    switch (position) {
+      case 'dewan_pengawas_1':
+        setDewanPengawas1Photo(null)
+        setDewanPengawas1PhotoPreview(null)
+        break
+      case 'dewan_pengawas_2':
+        setDewanPengawas2Photo(null)
+        setDewanPengawas2PhotoPreview(null)
+        break
+      case 'ketua_umum':
+        setKetuaUmumPhoto(null)
+        setKetuaUmumPhotoPreview(null)
+        break
+      case 'wakil_ketua':
+        setWakilKetuaPhoto(null)
+        setWakilKetuaPhotoPreview(null)
+        break
+      case 'sekretaris':
+        setSekretarisPhoto(null)
+        setSekretarisPhotoPreview(null)
+        break
+      case 'bendahara':
+        setBendaharaPhoto(null)
+        setBendaharaPhotoPreview(null)
+        break
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -357,15 +387,26 @@ export default function EditStrukturPage() {
                         height={80}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditPhoto(dewanPengawas1PhotoPreview, 'dewan_pengawas_1')}
-                        className="w-full"
-                      >
-                        {dewanPengawas1Photo ? 'Re-crop Photo' : 'Edit Photo'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditPhoto(dewanPengawas1PhotoPreview, 'dewan_pengawas_1')}
+                          className="flex-1"
+                        >
+                          {dewanPengawas1Photo ? 'Re-crop' : 'Edit'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeletePhoto('dewan_pengawas_1')}
+                          className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -403,15 +444,26 @@ export default function EditStrukturPage() {
                         height={80}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditPhoto(dewanPengawas2PhotoPreview, 'dewan_pengawas_2')}
-                        className="w-full"
-                      >
-                        {dewanPengawas2Photo ? 'Re-crop Photo' : 'Edit Photo'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditPhoto(dewanPengawas2PhotoPreview, 'dewan_pengawas_2')}
+                          className="flex-1"
+                        >
+                          {dewanPengawas2Photo ? 'Re-crop' : 'Edit'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeletePhoto('dewan_pengawas_2')}
+                          className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -458,15 +510,26 @@ export default function EditStrukturPage() {
                         height={80}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditPhoto(ketuaUmumPhotoPreview, 'ketua_umum')}
-                        className="w-full"
-                      >
-                        {ketuaUmumPhoto ? 'Re-crop Photo' : 'Edit Photo'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditPhoto(ketuaUmumPhotoPreview, 'ketua_umum')}
+                          className="flex-1"
+                        >
+                          {ketuaUmumPhoto ? 'Re-crop' : 'Edit'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeletePhoto('ketua_umum')}
+                          className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -505,15 +568,26 @@ export default function EditStrukturPage() {
                         height={80}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditPhoto(wakilKetuaPhotoPreview, 'wakil_ketua')}
-                        className="w-full"
-                      >
-                        {wakilKetuaPhoto ? 'Re-crop Photo' : 'Edit Photo'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditPhoto(wakilKetuaPhotoPreview, 'wakil_ketua')}
+                          className="flex-1"
+                        >
+                          {wakilKetuaPhoto ? 'Re-crop' : 'Edit'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeletePhoto('wakil_ketua')}
+                          className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -552,15 +626,26 @@ export default function EditStrukturPage() {
                         height={80}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditPhoto(sekretarisPhotoPreview, 'sekretaris')}
-                        className="w-full"
-                      >
-                        {sekretarisPhoto ? 'Re-crop Photo' : 'Edit Photo'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditPhoto(sekretarisPhotoPreview, 'sekretaris')}
+                          className="flex-1"
+                        >
+                          {sekretarisPhoto ? 'Re-crop' : 'Edit'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeletePhoto('sekretaris')}
+                          className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -599,15 +684,26 @@ export default function EditStrukturPage() {
                         height={80}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditPhoto(bendaharaPhotoPreview, 'bendahara')}
-                        className="w-full"
-                      >
-                        {bendaharaPhoto ? 'Re-crop Photo' : 'Edit Photo'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditPhoto(bendaharaPhotoPreview, 'bendahara')}
+                          className="flex-1"
+                        >
+                          {bendaharaPhoto ? 'Re-crop' : 'Edit'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeletePhoto('bendahara')}
+                          className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>

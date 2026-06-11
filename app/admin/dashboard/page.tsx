@@ -14,8 +14,9 @@ import {
 
 export default function DashboardPage() {
   const [activitiesCount, setActivitiesCount] = useState(0)
+  const [testimonialsCount, setTestimonialsCount] = useState(0)
 
-  // Fetch real activities count
+  // Fetch real counts
   useEffect(() => {
     const fetchActivitiesCount = async () => {
       try {
@@ -26,7 +27,19 @@ export default function DashboardPage() {
         console.error('Error fetching activities count:', error)
       }
     }
+
+    const fetchTestimonialsCount = async () => {
+      try {
+        const response = await fetch('/api/admin/testimonials')
+        const data = await response.json()
+        setTestimonialsCount(data.testimonials?.length || 0)
+      } catch (error) {
+        console.error('Error fetching testimonials count:', error)
+      }
+    }
+
     fetchActivitiesCount()
+    fetchTestimonialsCount()
   }, [])
 
   // Stats - activities count is now real, others remain placeholder
@@ -42,10 +55,10 @@ export default function DashboardPage() {
     },
     {
       title: "Testimonials",
-      value: "12",
+      value: testimonialsCount.toString(),
       icon: MessageSquare,
       description: "Active testimonials",
-      trend: "+3 this month",
+      trend: "Real-time count",
       color: "text-purple-600",
       bgColor: "bg-purple-100",
     },
@@ -60,10 +73,10 @@ export default function DashboardPage() {
     },
     {
       title: "Team Members",
-      value: "13",
+      value: "Coming Soon",
       icon: Users,
-      description: "In organization",
-      trend: "Current period",
+      description: "Feature in development",
+      trend: "Coming soon",
       color: "text-orange-600",
       bgColor: "bg-orange-100",
     },
@@ -137,14 +150,40 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <a
-                href="/admin/dashboard/activities"
+                href="/admin/dashboard/hero-slides"
                 className="p-4 border border-gray-200 rounded-lg hover:border-emerald-500 hover:bg-emerald-50 transition-colors"
               >
-                <Calendar className="w-5 h-5 text-emerald-600 mb-2" />
+                <ImageIcon className="w-5 h-5 text-emerald-600 mb-2" />
                 <h3 className="font-medium text-gray-900 mb-1">
-                  Manage Activities
+                  Hero Slides
+                </h3>
+                <p className="text-xs text-gray-600">
+                  Manage homepage hero slides
+                </p>
+              </a>
+
+              <a
+                href="/admin/dashboard/programs"
+                className="p-4 border border-gray-200 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
+              >
+                <Activity className="w-5 h-5 text-indigo-600 mb-2" />
+                <h3 className="font-medium text-gray-900 mb-1">
+                  Programs
+                </h3>
+                <p className="text-xs text-gray-600">
+                  Manage departemen programs
+                </p>
+              </a>
+
+              <a
+                href="/admin/dashboard/activities"
+                className="p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+              >
+                <Calendar className="w-5 h-5 text-blue-600 mb-2" />
+                <h3 className="font-medium text-gray-900 mb-1">
+                  Activities
                 </h3>
                 <p className="text-xs text-gray-600">
                   Add, edit, or remove activities
@@ -157,7 +196,7 @@ export default function DashboardPage() {
               >
                 <MessageSquare className="w-5 h-5 text-purple-600 mb-2" />
                 <h3 className="font-medium text-gray-900 mb-1">
-                  Manage Testimonials
+                  Testimonials
                 </h3>
                 <p className="text-xs text-gray-600">
                   Update member testimonials
@@ -166,14 +205,27 @@ export default function DashboardPage() {
 
               <a
                 href="/admin/dashboard/statistics"
-                className="p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                className="p-4 border border-gray-200 rounded-lg hover:border-amber-500 hover:bg-amber-50 transition-colors"
               >
-                <TrendingUp className="w-5 h-5 text-blue-600 mb-2" />
+                <TrendingUp className="w-5 h-5 text-amber-600 mb-2" />
                 <h3 className="font-medium text-gray-900 mb-1">
-                  Update Statistics
+                  Statistics
                 </h3>
                 <p className="text-xs text-gray-600">
                   Modify homepage stats
+                </p>
+              </a>
+
+              <a
+                href="/admin/dashboard/struktur"
+                className="p-4 border border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors"
+              >
+                <Users className="w-5 h-5 text-orange-600 mb-2" />
+                <h3 className="font-medium text-gray-900 mb-1">
+                  Struktur Organisasi
+                </h3>
+                <p className="text-xs text-gray-600">
+                  Manage organizational structure
                 </p>
               </a>
             </div>

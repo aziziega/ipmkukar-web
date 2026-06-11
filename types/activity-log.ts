@@ -29,6 +29,7 @@ export enum EntityType {
   STATISTICS = 'statistics',
   ORGANIZATIONAL_STRUCTURE = 'organizational_structure',
   ACTIVITY = 'activity',
+  PROGRAM = 'program',
   SESSION = 'session',
 }
 
@@ -127,5 +128,6 @@ export const ENTITY_TYPE_LABELS: Record<EntityType, string> = {
   [EntityType.STATISTICS]: 'Statistics',
   [EntityType.ORGANIZATIONAL_STRUCTURE]: 'Organizational Structure',
   [EntityType.ACTIVITY]: 'Activity',
+  [EntityType.PROGRAM]: 'Program',
   [EntityType.SESSION]: 'Session',
 }

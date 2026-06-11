@@ -9,9 +9,11 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, Loader2, Shield } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 export default function AdminLoginPage() {
   const router = useRouter()
+  const { toast } = useToast()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [rememberMe, setRememberMe] = useState(false)
@@ -39,16 +41,34 @@ export default function AdminLoginPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || "Login failed")
+        const errorMsg = data.error || "Login gagal"
+        setError(errorMsg)
+        toast({
+          title: "Login Gagal",
+          description: errorMsg,
+          variant: "destructive",
+        })
         setIsLoading(false)
         return
       }
+
+      // Success toast
+      toast({
+        title: "Login Berhasil",
+        description: "Selamat datang di Admin Dashboard",
+      })
 
       // Redirect to dashboard on success
       router.push("/admin/dashboard")
       router.refresh()
     } catch (err) {
-      setError("An error occurred. Please try again.")
+      const errorMsg = "Terjadi kesalahan. Silakan coba lagi."
+      setError(errorMsg)
+      toast({
+        title: "Login Gagal",
+        description: errorMsg,
+        variant: "destructive",
+      })
       setIsLoading(false)
     }
   }
@@ -67,9 +87,9 @@ export default function AdminLoginPage() {
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 mb-4 shadow-lg"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4"
           >
-            <Shield className="w-8 h-8 text-white" />
+            <img src="/logo/logo-IPM.webp" alt="IPM Kukar Logo" className="w-16 h-16 object-contain" />
           </motion.div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Admin Dashboard
