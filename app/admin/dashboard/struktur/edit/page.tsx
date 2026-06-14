@@ -236,7 +236,7 @@ export default function EditStrukturPage() {
     }
 
     if (!kepalaSeniBudaya.trim() || !kepalaSosialKeagamaan.trim() || !kepalaInfokom.trim() ||
-        !kepalaPengembanganOrg.trim() || !kepalaOlahraga.trim() || !kepalaKajianPendidikan.trim()) {
+      !kepalaPengembanganOrg.trim() || !kepalaOlahraga.trim() || !kepalaKajianPendidikan.trim()) {
       toast({
         title: "Validation Error",
         description: "All Departemen heads are required",
@@ -345,7 +345,7 @@ export default function EditStrukturPage() {
                 required
                 className="mt-1"
               />
-              <p className="text-sm text-gray-500 mt-1">Format: YYYY-YYYY</p>
+              <p className="text-sm text-gray-500 mt-1">Format: YYYY/YYYY</p>
             </div>
           </CardContent>
         </Card>

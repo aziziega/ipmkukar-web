@@ -284,7 +284,8 @@ export default function BergabungFooterSection() {
                       <Instagram size={16} className="text-white group-hover:scale-110 transition-transform" />
                     </a>
                     <a
-                      href="#"
+                      href="https://www.tiktok.com/@ipmkukar.yogyakarta"
+                      target="_blank"
                       className="w-9 h-9 rounded-full bg-white/10 hover:bg-gold flex items-center justify-center transition-all group"
                     >
                       <FaTiktok size={14} className="text-white group-hover:scale-110 transition-transform" />
@@ -296,8 +297,10 @@ export default function BergabungFooterSection() {
                       <Youtube size={16} className="text-white group-hover:scale-110 transition-transform" />
                     </a>
                     <a
-                      href="#"
+                      href="https://wa.me/+6285159277007"
                       className="w-9 h-9 rounded-full bg-white/10 hover:bg-gold flex items-center justify-center transition-all group"
+                      target="_blank"
+
                     >
                       <FaWhatsapp size={16} className="text-white group-hover:scale-110 transition-transform" />
                     </a>
