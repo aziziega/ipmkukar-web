@@ -22,6 +22,7 @@ import {
   Database,
   DollarSign,
   CheckSquare,
+  Upload,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -123,6 +124,12 @@ const navCategories: NavCategory[] = [
   {
     label: "PENGATURAN",
     items: [
+      {
+        title: "Import File",
+        href: "#",
+        icon: Upload,
+        badge: "V2",
+      },
       {
         title: "Admin Accounts",
         href: "/admin/dashboard/admins",
