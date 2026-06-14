@@ -20,6 +20,12 @@ export type StrukturPhotoPosition =
   | 'wakil_ketua'
   | 'sekretaris'
   | 'bendahara'
+  | 'kepala_seni_budaya'
+  | 'kepala_sosial_keagamaan'
+  | 'kepala_infokom'
+  | 'kepala_pengembangan_org'
+  | 'kepala_olahraga'
+  | 'kepala_kajian_pendidikan'
 
 /**
  * Generate default avatar URL from name using DiceBear API

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Edit, Loader2, Users, Trash2 } from "lucide-react"
+import { Edit, Loader2, Users, Trash2, Palette, Heart, Megaphone, Rocket, Trophy, BookOpen } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
@@ -40,6 +40,12 @@ interface OrganizationalStructure {
   wakil_ketua_photo: string | null
   sekretaris_photo: string | null
   bendahara_photo: string | null
+  kepala_seni_budaya_photo: string | null
+  kepala_sosial_keagamaan_photo: string | null
+  kepala_infokom_photo: string | null
+  kepala_pengembangan_org_photo: string | null
+  kepala_olahraga_photo: string | null
+  kepala_kajian_pendidikan_photo: string | null
   updated_at: string
 }
 
@@ -319,33 +325,135 @@ export default function StrukturPage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-xs text-purple-600 font-semibold mb-1">Seni dan Budaya</p>
-                  <p className="font-semibold text-gray-900">{structure.kepala_seni_budaya}</p>
+                  <div className="flex items-center gap-3 mb-2">
+                    {structure.kepala_seni_budaya_photo ? (
+                      <Image
+                        src={structure.kepala_seni_budaya_photo}
+                        alt="Tim Seni dan Budaya"
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                        <Palette className="w-6 h-6 text-purple-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="text-xs text-purple-600 font-semibold mb-1">Seni dan Budaya</p>
+                      <p className="font-semibold text-gray-900 text-sm">{structure.kepala_seni_budaya}</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-xs text-green-600 font-semibold mb-1">Sosial dan Keagamaan</p>
-                  <p className="font-semibold text-gray-900">{structure.kepala_sosial_keagamaan}</p>
+                  <div className="flex items-center gap-3 mb-2">
+                    {structure.kepala_sosial_keagamaan_photo ? (
+                      <Image
+                        src={structure.kepala_sosial_keagamaan_photo}
+                        alt="Tim Sosial dan Keagamaan"
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <Heart className="w-6 h-6 text-green-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="text-xs text-green-600 font-semibold mb-1">Sosial dan Keagamaan</p>
+                      <p className="font-semibold text-gray-900 text-sm">{structure.kepala_sosial_keagamaan}</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-xs text-blue-600 font-semibold mb-1">Informasi dan Komunikasi</p>
-                  <p className="font-semibold text-gray-900">{structure.kepala_infokom}</p>
+                  <div className="flex items-center gap-3 mb-2">
+                    {structure.kepala_infokom_photo ? (
+                      <Image
+                        src={structure.kepala_infokom_photo}
+                        alt="Tim Informasi dan Komunikasi"
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <Megaphone className="w-6 h-6 text-blue-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="text-xs text-blue-600 font-semibold mb-1">Informasi dan Komunikasi</p>
+                      <p className="font-semibold text-gray-900 text-sm">{structure.kepala_infokom}</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-xs text-amber-600 font-semibold mb-1">Pengembangan Organisasi</p>
-                  <p className="font-semibold text-gray-900">{structure.kepala_pengembangan_org}</p>
+                  <div className="flex items-center gap-3 mb-2">
+                    {structure.kepala_pengembangan_org_photo ? (
+                      <Image
+                        src={structure.kepala_pengembangan_org_photo}
+                        alt="Tim Pengembangan Organisasi"
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                        <Rocket className="w-6 h-6 text-amber-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="text-xs text-amber-600 font-semibold mb-1">Pengembangan Organisasi</p>
+                      <p className="font-semibold text-gray-900 text-sm">{structure.kepala_pengembangan_org}</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-xs text-red-600 font-semibold mb-1">Olahraga</p>
-                  <p className="font-semibold text-gray-900">{structure.kepala_olahraga}</p>
+                  <div className="flex items-center gap-3 mb-2">
+                    {structure.kepala_olahraga_photo ? (
+                      <Image
+                        src={structure.kepala_olahraga_photo}
+                        alt="Tim Olahraga"
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                        <Trophy className="w-6 h-6 text-red-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="text-xs text-red-600 font-semibold mb-1">Olahraga</p>
+                      <p className="font-semibold text-gray-900 text-sm">{structure.kepala_olahraga}</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-xs text-indigo-600 font-semibold mb-1">Kajian dan Pendidikan</p>
-                  <p className="font-semibold text-gray-900">{structure.kepala_kajian_pendidikan}</p>
+                  <div className="flex items-center gap-3 mb-2">
+                    {structure.kepala_kajian_pendidikan_photo ? (
+                      <Image
+                        src={structure.kepala_kajian_pendidikan_photo}
+                        alt="Tim Kajian dan Pendidikan"
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                        <BookOpen className="w-6 h-6 text-indigo-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="text-xs text-indigo-600 font-semibold mb-1">Kajian dan Pendidikan</p>
+                      <p className="font-semibold text-gray-900 text-sm">{structure.kepala_kajian_pendidikan}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>

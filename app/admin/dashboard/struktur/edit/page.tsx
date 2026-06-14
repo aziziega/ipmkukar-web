@@ -33,6 +33,12 @@ interface OrganizationalStructure {
   wakil_ketua_photo: string | null
   sekretaris_photo: string | null
   bendahara_photo: string | null
+  kepala_seni_budaya_photo: string | null
+  kepala_sosial_keagamaan_photo: string | null
+  kepala_infokom_photo: string | null
+  kepala_pengembangan_org_photo: string | null
+  kepala_olahraga_photo: string | null
+  kepala_kajian_pendidikan_photo: string | null
 }
 
 export default function EditStrukturPage() {
@@ -64,6 +70,12 @@ export default function EditStrukturPage() {
   const [wakilKetuaPhoto, setWakilKetuaPhoto] = useState<File | null>(null)
   const [sekretarisPhoto, setSekretarisPhoto] = useState<File | null>(null)
   const [bendaharaPhoto, setBendaharaPhoto] = useState<File | null>(null)
+  const [kepalaSeniBudayaPhoto, setKepalaSeniBudayaPhoto] = useState<File | null>(null)
+  const [kepalaSosialKeagamaanPhoto, setKepalaSosialKeagamaanPhoto] = useState<File | null>(null)
+  const [kepalaInfokomPhoto, setKepalaInfokomPhoto] = useState<File | null>(null)
+  const [kepalaPengembanganOrgPhoto, setKepalaPengembanganOrgPhoto] = useState<File | null>(null)
+  const [kepalaOlahragaPhoto, setKepalaOlahragaPhoto] = useState<File | null>(null)
+  const [kepalaKajianPendidikanPhoto, setKepalaKajianPendidikanPhoto] = useState<File | null>(null)
 
   // Photo previews (existing URLs)
   const [dewanPengawas1PhotoPreview, setDewanPengawas1PhotoPreview] = useState<string | null>(null)
@@ -72,6 +84,12 @@ export default function EditStrukturPage() {
   const [wakilKetuaPhotoPreview, setWakilKetuaPhotoPreview] = useState<string | null>(null)
   const [sekretarisPhotoPreview, setSekretarisPhotoPreview] = useState<string | null>(null)
   const [bendaharaPhotoPreview, setBendaharaPhotoPreview] = useState<string | null>(null)
+  const [kepalaSeniBudayaPhotoPreview, setKepalaSeniBudayaPhotoPreview] = useState<string | null>(null)
+  const [kepalaSosialKeagamaanPhotoPreview, setKepalaSosialKeagamaanPhotoPreview] = useState<string | null>(null)
+  const [kepalaInfokomPhotoPreview, setKepalaInfokomPhotoPreview] = useState<string | null>(null)
+  const [kepalaPengembanganOrgPhotoPreview, setKepalaPengembanganOrgPhotoPreview] = useState<string | null>(null)
+  const [kepalaOlahragaPhotoPreview, setKepalaOlahragaPhotoPreview] = useState<string | null>(null)
+  const [kepalaKajianPendidikanPhotoPreview, setKepalaKajianPendidikanPhotoPreview] = useState<string | null>(null)
 
   // Crop modal state
   const [isCropModalOpen, setIsCropModalOpen] = useState(false)
@@ -111,6 +129,12 @@ export default function EditStrukturPage() {
         setWakilKetuaPhotoPreview(s.wakil_ketua_photo)
         setSekretarisPhotoPreview(s.sekretaris_photo)
         setBendaharaPhotoPreview(s.bendahara_photo)
+        setKepalaSeniBudayaPhotoPreview(s.kepala_seni_budaya_photo)
+        setKepalaSosialKeagamaanPhotoPreview(s.kepala_sosial_keagamaan_photo)
+        setKepalaInfokomPhotoPreview(s.kepala_infokom_photo)
+        setKepalaPengembanganOrgPhotoPreview(s.kepala_pengembangan_org_photo)
+        setKepalaOlahragaPhotoPreview(s.kepala_olahraga_photo)
+        setKepalaKajianPendidikanPhotoPreview(s.kepala_kajian_pendidikan_photo)
       }
     } catch (error) {
       console.error('Error fetching structure:', error)
@@ -180,6 +204,30 @@ export default function EditStrukturPage() {
         setBendaharaPhoto(croppedFile)
         setBendaharaPhotoPreview(previewUrl)
         break
+      case 'kepala_seni_budaya':
+        setKepalaSeniBudayaPhoto(croppedFile)
+        setKepalaSeniBudayaPhotoPreview(previewUrl)
+        break
+      case 'kepala_sosial_keagamaan':
+        setKepalaSosialKeagamaanPhoto(croppedFile)
+        setKepalaSosialKeagamaanPhotoPreview(previewUrl)
+        break
+      case 'kepala_infokom':
+        setKepalaInfokomPhoto(croppedFile)
+        setKepalaInfokomPhotoPreview(previewUrl)
+        break
+      case 'kepala_pengembangan_org':
+        setKepalaPengembanganOrgPhoto(croppedFile)
+        setKepalaPengembanganOrgPhotoPreview(previewUrl)
+        break
+      case 'kepala_olahraga':
+        setKepalaOlahragaPhoto(croppedFile)
+        setKepalaOlahragaPhotoPreview(previewUrl)
+        break
+      case 'kepala_kajian_pendidikan':
+        setKepalaKajianPendidikanPhoto(croppedFile)
+        setKepalaKajianPendidikanPhotoPreview(previewUrl)
+        break
     }
   }
 
@@ -209,6 +257,30 @@ export default function EditStrukturPage() {
       case 'bendahara':
         setBendaharaPhoto(null)
         setBendaharaPhotoPreview(null)
+        break
+      case 'kepala_seni_budaya':
+        setKepalaSeniBudayaPhoto(null)
+        setKepalaSeniBudayaPhotoPreview(null)
+        break
+      case 'kepala_sosial_keagamaan':
+        setKepalaSosialKeagamaanPhoto(null)
+        setKepalaSosialKeagamaanPhotoPreview(null)
+        break
+      case 'kepala_infokom':
+        setKepalaInfokomPhoto(null)
+        setKepalaInfokomPhotoPreview(null)
+        break
+      case 'kepala_pengembangan_org':
+        setKepalaPengembanganOrgPhoto(null)
+        setKepalaPengembanganOrgPhotoPreview(null)
+        break
+      case 'kepala_olahraga':
+        setKepalaOlahragaPhoto(null)
+        setKepalaOlahragaPhotoPreview(null)
+        break
+      case 'kepala_kajian_pendidikan':
+        setKepalaKajianPendidikanPhoto(null)
+        setKepalaKajianPendidikanPhotoPreview(null)
         break
     }
   }
@@ -271,6 +343,12 @@ export default function EditStrukturPage() {
       if (wakilKetuaPhoto) formData.append('wakil_ketua_photo', wakilKetuaPhoto)
       if (sekretarisPhoto) formData.append('sekretaris_photo', sekretarisPhoto)
       if (bendaharaPhoto) formData.append('bendahara_photo', bendaharaPhoto)
+      if (kepalaSeniBudayaPhoto) formData.append('kepala_seni_budaya_photo', kepalaSeniBudayaPhoto)
+      if (kepalaSosialKeagamaanPhoto) formData.append('kepala_sosial_keagamaan_photo', kepalaSosialKeagamaanPhoto)
+      if (kepalaInfokomPhoto) formData.append('kepala_infokom_photo', kepalaInfokomPhoto)
+      if (kepalaPengembanganOrgPhoto) formData.append('kepala_pengembangan_org_photo', kepalaPengembanganOrgPhoto)
+      if (kepalaOlahragaPhoto) formData.append('kepala_olahraga_photo', kepalaOlahragaPhoto)
+      if (kepalaKajianPendidikanPhoto) formData.append('kepala_kajian_pendidikan_photo', kepalaKajianPendidikanPhoto)
 
       const response = await fetch('/api/admin/struktur', {
         method: 'PUT',
@@ -379,12 +457,12 @@ export default function EditStrukturPage() {
                     className="cursor-pointer"
                   />
                   {dewanPengawas1PhotoPreview && (
-                    <div className="mt-2 space-y-2">
+                    <div className="mt-2 flex items-center gap-3">
                       <Image
                         src={dewanPengawas1PhotoPreview}
                         alt="Preview"
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
                       <div className="flex gap-2">
@@ -393,7 +471,6 @@ export default function EditStrukturPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditPhoto(dewanPengawas1PhotoPreview, 'dewan_pengawas_1')}
-                          className="flex-1"
                         >
                           {dewanPengawas1Photo ? 'Re-crop' : 'Edit'}
                         </Button>
@@ -436,12 +513,12 @@ export default function EditStrukturPage() {
                     className="cursor-pointer"
                   />
                   {dewanPengawas2PhotoPreview && (
-                    <div className="mt-2 space-y-2">
+                    <div className="mt-2 flex items-center gap-3">
                       <Image
                         src={dewanPengawas2PhotoPreview}
                         alt="Preview"
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
                       <div className="flex gap-2">
@@ -450,7 +527,6 @@ export default function EditStrukturPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditPhoto(dewanPengawas2PhotoPreview, 'dewan_pengawas_2')}
-                          className="flex-1"
                         >
                           {dewanPengawas2Photo ? 'Re-crop' : 'Edit'}
                         </Button>
@@ -502,12 +578,12 @@ export default function EditStrukturPage() {
                     className="cursor-pointer"
                   />
                   {ketuaUmumPhotoPreview && (
-                    <div className="mt-2 space-y-2">
+                    <div className="mt-2 flex items-center gap-3">
                       <Image
                         src={ketuaUmumPhotoPreview}
                         alt="Preview"
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
                       <div className="flex gap-2">
@@ -516,7 +592,6 @@ export default function EditStrukturPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditPhoto(ketuaUmumPhotoPreview, 'ketua_umum')}
-                          className="flex-1"
                         >
                           {ketuaUmumPhoto ? 'Re-crop' : 'Edit'}
                         </Button>
@@ -560,12 +635,12 @@ export default function EditStrukturPage() {
                     className="cursor-pointer"
                   />
                   {wakilKetuaPhotoPreview && (
-                    <div className="mt-2 space-y-2">
+                    <div className="mt-2 flex items-center gap-3">
                       <Image
                         src={wakilKetuaPhotoPreview}
                         alt="Preview"
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
                       <div className="flex gap-2">
@@ -574,7 +649,6 @@ export default function EditStrukturPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditPhoto(wakilKetuaPhotoPreview, 'wakil_ketua')}
-                          className="flex-1"
                         >
                           {wakilKetuaPhoto ? 'Re-crop' : 'Edit'}
                         </Button>
@@ -618,12 +692,12 @@ export default function EditStrukturPage() {
                     className="cursor-pointer"
                   />
                   {sekretarisPhotoPreview && (
-                    <div className="mt-2 space-y-2">
+                    <div className="mt-2 flex items-center gap-3">
                       <Image
                         src={sekretarisPhotoPreview}
                         alt="Preview"
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
                       <div className="flex gap-2">
@@ -632,7 +706,6 @@ export default function EditStrukturPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditPhoto(sekretarisPhotoPreview, 'sekretaris')}
-                          className="flex-1"
                         >
                           {sekretarisPhoto ? 'Re-crop' : 'Edit'}
                         </Button>
@@ -676,12 +749,12 @@ export default function EditStrukturPage() {
                     className="cursor-pointer"
                   />
                   {bendaharaPhotoPreview && (
-                    <div className="mt-2 space-y-2">
+                    <div className="mt-2 flex items-center gap-3">
                       <Image
                         src={bendaharaPhotoPreview}
                         alt="Preview"
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                         className="rounded-full object-cover border-2 border-gray-200"
                       />
                       <div className="flex gap-2">
@@ -690,7 +763,6 @@ export default function EditStrukturPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditPhoto(bendaharaPhotoPreview, 'bendahara')}
-                          className="flex-1"
                         >
                           {bendaharaPhoto ? 'Re-crop' : 'Edit'}
                         </Button>
@@ -715,80 +787,230 @@ export default function EditStrukturPage() {
         {/* Departemen */}
         <Card>
           <CardHeader>
-            <CardTitle>Kepala Departemen *</CardTitle>
+            <CardTitle>Kepala Departemen * (Foto Grup Tim)</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="kepala_seni_budaya">Kepala Seni dan Budaya *</Label>
-                <Input
-                  id="kepala_seni_budaya"
-                  value={kepalaSeniBudaya}
-                  onChange={(e) => setKepalaSeniBudaya(e.target.value)}
-                  placeholder="Full name"
-                  required
-                  className="mt-1"
-                />
+          <CardContent className="space-y-6">
+            <p className="text-sm text-gray-600">Upload foto grup untuk setiap departemen (foto tim/bersama departemen)</p>
+            
+            {/* Seni dan Budaya */}
+            <div className="space-y-3 pb-4 border-b border-gray-200">
+              <Label htmlFor="kepala_seni_budaya" className="text-base font-semibold">Seni dan Budaya</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kepala_seni_budaya" className="text-sm">Nama Kepala *</Label>
+                  <Input
+                    id="kepala_seni_budaya"
+                    value={kepalaSeniBudaya}
+                    onChange={(e) => setKepalaSeniBudaya(e.target.value)}
+                    placeholder="Full name"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="kepala_seni_budaya_photo" className="text-sm">Foto Grup Tim</Label>
+                  <Input
+                    id="kepala_seni_budaya_photo"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={(e) => handlePhotoChange(e, setKepalaSeniBudayaPhoto, setKepalaSeniBudayaPhotoPreview)}
+                    className="cursor-pointer mt-1"
+                  />
+                  {kepalaSeniBudayaPhotoPreview && (
+                    <div className="mt-2 flex items-center gap-3">
+                      <Image src={kepalaSeniBudayaPhotoPreview} alt="Preview" width={60} height={60} className="rounded-full object-cover border-2 border-gray-200" />
+                      <div className="flex gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleEditPhoto(kepalaSeniBudayaPhotoPreview, 'kepala_seni_budaya')}>{kepalaSeniBudayaPhoto ? 'Re-crop' : 'Edit'}</Button>
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleDeletePhoto('kepala_seni_budaya')} className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"><Trash2 className="w-4 h-4" /></Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+            </div>
 
-              <div>
-                <Label htmlFor="kepala_sosial_keagamaan">Kepala Sosial dan Keagamaan *</Label>
-                <Input
-                  id="kepala_sosial_keagamaan"
-                  value={kepalaSosialKeagamaan}
-                  onChange={(e) => setKepalaSosialKeagamaan(e.target.value)}
-                  placeholder="Full name"
-                  required
-                  className="mt-1"
-                />
+            {/* Sosial dan Keagamaan */}
+            <div className="space-y-3 pb-4 border-b border-gray-200">
+              <Label htmlFor="kepala_sosial_keagamaan" className="text-base font-semibold">Sosial dan Keagamaan</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kepala_sosial_keagamaan" className="text-sm">Nama Kepala *</Label>
+                  <Input
+                    id="kepala_sosial_keagamaan"
+                    value={kepalaSosialKeagamaan}
+                    onChange={(e) => setKepalaSosialKeagamaan(e.target.value)}
+                    placeholder="Full name"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="kepala_sosial_keagamaan_photo" className="text-sm">Foto Grup Tim</Label>
+                  <Input
+                    id="kepala_sosial_keagamaan_photo"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={(e) => handlePhotoChange(e, setKepalaSosialKeagamaanPhoto, setKepalaSosialKeagamaanPhotoPreview)}
+                    className="cursor-pointer mt-1"
+                  />
+                  {kepalaSosialKeagamaanPhotoPreview && (
+                    <div className="mt-2 flex items-center gap-3">
+                      <Image src={kepalaSosialKeagamaanPhotoPreview} alt="Preview" width={60} height={60} className="rounded-full object-cover border-2 border-gray-200" />
+                      <div className="flex gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleEditPhoto(kepalaSosialKeagamaanPhotoPreview, 'kepala_sosial_keagamaan')}>{kepalaSosialKeagamaanPhoto ? 'Re-crop' : 'Edit'}</Button>
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleDeletePhoto('kepala_sosial_keagamaan')} className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"><Trash2 className="w-4 h-4" /></Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+            </div>
 
-              <div>
-                <Label htmlFor="kepala_infokom">Kepala Informasi dan Komunikasi *</Label>
-                <Input
-                  id="kepala_infokom"
-                  value={kepalaInfokom}
-                  onChange={(e) => setKepalaInfokom(e.target.value)}
-                  placeholder="Full name"
-                  required
-                  className="mt-1"
-                />
+            {/* Informasi dan Komunikasi */}
+            <div className="space-y-3 pb-4 border-b border-gray-200">
+              <Label htmlFor="kepala_infokom" className="text-base font-semibold">Informasi dan Komunikasi</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kepala_infokom" className="text-sm">Nama Kepala *</Label>
+                  <Input
+                    id="kepala_infokom"
+                    value={kepalaInfokom}
+                    onChange={(e) => setKepalaInfokom(e.target.value)}
+                    placeholder="Full name"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="kepala_infokom_photo" className="text-sm">Foto Grup Tim</Label>
+                  <Input
+                    id="kepala_infokom_photo"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={(e) => handlePhotoChange(e, setKepalaInfokomPhoto, setKepalaInfokomPhotoPreview)}
+                    className="cursor-pointer mt-1"
+                  />
+                  {kepalaInfokomPhotoPreview && (
+                    <div className="mt-2 flex items-center gap-3">
+                      <Image src={kepalaInfokomPhotoPreview} alt="Preview" width={60} height={60} className="rounded-full object-cover border-2 border-gray-200" />
+                      <div className="flex gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleEditPhoto(kepalaInfokomPhotoPreview, 'kepala_infokom')}>{kepalaInfokomPhoto ? 'Re-crop' : 'Edit'}</Button>
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleDeletePhoto('kepala_infokom')} className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"><Trash2 className="w-4 h-4" /></Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+            </div>
 
-              <div>
-                <Label htmlFor="kepala_pengembangan_org">Kepala Pengembangan Organisasi *</Label>
-                <Input
-                  id="kepala_pengembangan_org"
-                  value={kepalaPengembanganOrg}
-                  onChange={(e) => setKepalaPengembanganOrg(e.target.value)}
-                  placeholder="Full name"
-                  required
-                  className="mt-1"
-                />
+            {/* Pengembangan Organisasi */}
+            <div className="space-y-3 pb-4 border-b border-gray-200">
+              <Label htmlFor="kepala_pengembangan_org" className="text-base font-semibold">Pengembangan Organisasi</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kepala_pengembangan_org" className="text-sm">Nama Kepala *</Label>
+                  <Input
+                    id="kepala_pengembangan_org"
+                    value={kepalaPengembanganOrg}
+                    onChange={(e) => setKepalaPengembanganOrg(e.target.value)}
+                    placeholder="Full name"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="kepala_pengembangan_org_photo" className="text-sm">Foto Grup Tim</Label>
+                  <Input
+                    id="kepala_pengembangan_org_photo"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={(e) => handlePhotoChange(e, setKepalaPengembanganOrgPhoto, setKepalaPengembanganOrgPhotoPreview)}
+                    className="cursor-pointer mt-1"
+                  />
+                  {kepalaPengembanganOrgPhotoPreview && (
+                    <div className="mt-2 flex items-center gap-3">
+                      <Image src={kepalaPengembanganOrgPhotoPreview} alt="Preview" width={60} height={60} className="rounded-full object-cover border-2 border-gray-200" />
+                      <div className="flex gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleEditPhoto(kepalaPengembanganOrgPhotoPreview, 'kepala_pengembangan_org')}>{kepalaPengembanganOrgPhoto ? 'Re-crop' : 'Edit'}</Button>
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleDeletePhoto('kepala_pengembangan_org')} className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"><Trash2 className="w-4 h-4" /></Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+            </div>
 
-              <div>
-                <Label htmlFor="kepala_olahraga">Kepala Olahraga *</Label>
-                <Input
-                  id="kepala_olahraga"
-                  value={kepalaOlahraga}
-                  onChange={(e) => setKepalaOlahraga(e.target.value)}
-                  placeholder="Full name"
-                  required
-                  className="mt-1"
-                />
+            {/* Olahraga */}
+            <div className="space-y-3 pb-4 border-b border-gray-200">
+              <Label htmlFor="kepala_olahraga" className="text-base font-semibold">Olahraga</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kepala_olahraga" className="text-sm">Nama Kepala *</Label>
+                  <Input
+                    id="kepala_olahraga"
+                    value={kepalaOlahraga}
+                    onChange={(e) => setKepalaOlahraga(e.target.value)}
+                    placeholder="Full name"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="kepala_olahraga_photo" className="text-sm">Foto Grup Tim</Label>
+                  <Input
+                    id="kepala_olahraga_photo"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={(e) => handlePhotoChange(e, setKepalaOlahragaPhoto, setKepalaOlahragaPhotoPreview)}
+                    className="cursor-pointer mt-1"
+                  />
+                  {kepalaOlahragaPhotoPreview && (
+                    <div className="mt-2 flex items-center gap-3">
+                      <Image src={kepalaOlahragaPhotoPreview} alt="Preview" width={60} height={60} className="rounded-full object-cover border-2 border-gray-200" />
+                      <div className="flex gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleEditPhoto(kepalaOlahragaPhotoPreview, 'kepala_olahraga')}>{kepalaOlahragaPhoto ? 'Re-crop' : 'Edit'}</Button>
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleDeletePhoto('kepala_olahraga')} className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"><Trash2 className="w-4 h-4" /></Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+            </div>
 
-              <div>
-                <Label htmlFor="kepala_kajian_pendidikan">Kepala Kajian dan Pendidikan *</Label>
-                <Input
-                  id="kepala_kajian_pendidikan"
-                  value={kepalaKajianPendidikan}
-                  onChange={(e) => setKepalaKajianPendidikan(e.target.value)}
-                  placeholder="Full name"
-                  required
-                  className="mt-1"
-                />
+            {/* Kajian dan Pendidikan */}
+            <div className="space-y-3">
+              <Label htmlFor="kepala_kajian_pendidikan" className="text-base font-semibold">Kajian dan Pendidikan</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kepala_kajian_pendidikan" className="text-sm">Nama Kepala *</Label>
+                  <Input
+                    id="kepala_kajian_pendidikan"
+                    value={kepalaKajianPendidikan}
+                    onChange={(e) => setKepalaKajianPendidikan(e.target.value)}
+                    placeholder="Full name"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="kepala_kajian_pendidikan_photo" className="text-sm">Foto Grup Tim</Label>
+                  <Input
+                    id="kepala_kajian_pendidikan_photo"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={(e) => handlePhotoChange(e, setKepalaKajianPendidikanPhoto, setKepalaKajianPendidikanPhotoPreview)}
+                    className="cursor-pointer mt-1"
+                  />
+                  {kepalaKajianPendidikanPhotoPreview && (
+                    <div className="mt-2 flex items-center gap-3">
+                      <Image src={kepalaKajianPendidikanPhotoPreview} alt="Preview" width={60} height={60} className="rounded-full object-cover border-2 border-gray-200" />
+                      <div className="flex gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleEditPhoto(kepalaKajianPendidikanPhotoPreview, 'kepala_kajian_pendidikan')}>{kepalaKajianPendidikanPhoto ? 'Re-crop' : 'Edit'}</Button>
+                        <Button type="button" variant="outline" size="sm" onClick={() => handleDeletePhoto('kepala_kajian_pendidikan')} className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"><Trash2 className="w-4 h-4" /></Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </CardContent>

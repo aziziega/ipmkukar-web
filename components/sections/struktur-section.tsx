@@ -27,6 +27,12 @@ interface OrganizationalStructure {
   wakil_ketua_photo: string | null
   sekretaris_photo: string | null
   bendahara_photo: string | null
+  kepala_seni_budaya_photo: string | null
+  kepala_sosial_keagamaan_photo: string | null
+  kepala_infokom_photo: string | null
+  kepala_pengembangan_org_photo: string | null
+  kepala_olahraga_photo: string | null
+  kepala_kajian_pendidikan_photo: string | null
 }
 
 export default function StrukturSection() {
@@ -306,9 +312,19 @@ export default function StrukturSection() {
               {/* Seni dan Budaya */}
               <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
-                    <Palette className="w-6 h-6 text-purple-600" />
-                  </div>
+                  {structure.kepala_seni_budaya_photo ? (
+                    <Image
+                      src={structure.kepala_seni_budaya_photo}
+                      alt="Tim Seni dan Budaya"
+                      width={48}
+                      height={48}
+                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
+                      <Palette className="w-6 h-6 text-purple-600" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-text-primary mb-1">
                       Seni dan Budaya
@@ -327,9 +343,19 @@ export default function StrukturSection() {
               {/* Sosial dan Keagamaan */}
               <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
-                    <Heart className="w-6 h-6 text-green-600" />
-                  </div>
+                  {structure.kepala_sosial_keagamaan_photo ? (
+                    <Image
+                      src={structure.kepala_sosial_keagamaan_photo}
+                      alt="Tim Sosial dan Keagamaan"
+                      width={48}
+                      height={48}
+                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-green-600" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-text-primary mb-1">
                       Sosial dan Keagamaan
@@ -348,9 +374,19 @@ export default function StrukturSection() {
               {/* Informasi dan Komunikasi */}
               <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
-                    <Megaphone className="w-6 h-6 text-blue-600" />
-                  </div>
+                  {structure.kepala_infokom_photo ? (
+                    <Image
+                      src={structure.kepala_infokom_photo}
+                      alt="Tim Informasi dan Komunikasi"
+                      width={48}
+                      height={48}
+                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <Megaphone className="w-6 h-6 text-blue-600" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-text-primary mb-1">
                       Informasi dan Komunikasi
@@ -369,9 +405,19 @@ export default function StrukturSection() {
               {/* Pengembangan Organisasi */}
               <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
-                    <Rocket className="w-6 h-6 text-amber-600" />
-                  </div>
+                  {structure.kepala_pengembangan_org_photo ? (
+                    <Image
+                      src={structure.kepala_pengembangan_org_photo}
+                      alt="Tim Pengembangan Organisasi"
+                      width={48}
+                      height={48}
+                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
+                      <Rocket className="w-6 h-6 text-amber-600" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-text-primary mb-1">
                       Pengembangan Organisasi
@@ -390,9 +436,19 @@ export default function StrukturSection() {
               {/* Departemen Olahraga */}
               <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center">
-                    <Trophy className="w-6 h-6 text-red-600" />
-                  </div>
+                  {structure.kepala_olahraga_photo ? (
+                    <Image
+                      src={structure.kepala_olahraga_photo}
+                      alt="Tim Olahraga"
+                      width={48}
+                      height={48}
+                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center">
+                      <Trophy className="w-6 h-6 text-red-600" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-text-primary mb-1">
                       Departemen Olahraga
@@ -411,9 +467,19 @@ export default function StrukturSection() {
               {/* Kajian Strategi dan Pendidikan */}
               <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center">
-                    <BookOpen className="w-6 h-6 text-indigo-600" />
-                  </div>
+                  {structure.kepala_kajian_pendidikan_photo ? (
+                    <Image
+                      src={structure.kepala_kajian_pendidikan_photo}
+                      alt="Tim Kajian dan Pendidikan"
+                      width={48}
+                      height={48}
+                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center">
+                      <BookOpen className="w-6 h-6 text-indigo-600" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-text-primary mb-1">
                       Kajian Strategi dan Pendidikan

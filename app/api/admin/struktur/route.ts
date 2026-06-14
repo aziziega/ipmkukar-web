@@ -110,6 +110,12 @@ export async function PUT(request: NextRequest) {
     const wakilKetuaPhoto = formData.get('wakil_ketua_photo') as File | null
     const sekretarisPhoto = formData.get('sekretaris_photo') as File | null
     const bendaharaPhoto = formData.get('bendahara_photo') as File | null
+    const kepalaSeniBudayaPhoto = formData.get('kepala_seni_budaya_photo') as File | null
+    const kepalaSosialKeagamaanPhoto = formData.get('kepala_sosial_keagamaan_photo') as File | null
+    const kepalaInfokomPhoto = formData.get('kepala_infokom_photo') as File | null
+    const kepalaPengembanganOrgPhoto = formData.get('kepala_pengembangan_org_photo') as File | null
+    const kepalaOlahragaPhoto = formData.get('kepala_olahraga_photo') as File | null
+    const kepalaKajianPendidikanPhoto = formData.get('kepala_kajian_pendidikan_photo') as File | null
 
     // Validate required fields
     if (!period || !ketuaUmum || !wakilKetua || !sekretaris || !bendahara ||
@@ -141,6 +147,12 @@ export async function PUT(request: NextRequest) {
       { position: 'wakil_ketua', file: wakilKetuaPhoto, name: wakilKetua, fieldName: 'wakil_ketua_photo' },
       { position: 'sekretaris', file: sekretarisPhoto, name: sekretaris, fieldName: 'sekretaris_photo' },
       { position: 'bendahara', file: bendaharaPhoto, name: bendahara, fieldName: 'bendahara_photo' },
+      { position: 'kepala_seni_budaya', file: kepalaSeniBudayaPhoto, name: kepalaSeniBudaya, fieldName: 'kepala_seni_budaya_photo' },
+      { position: 'kepala_sosial_keagamaan', file: kepalaSosialKeagamaanPhoto, name: kepalaSosialKeagamaan, fieldName: 'kepala_sosial_keagamaan_photo' },
+      { position: 'kepala_infokom', file: kepalaInfokomPhoto, name: kepalaInfokom, fieldName: 'kepala_infokom_photo' },
+      { position: 'kepala_pengembangan_org', file: kepalaPengembanganOrgPhoto, name: kepalaPengembanganOrg, fieldName: 'kepala_pengembangan_org_photo' },
+      { position: 'kepala_olahraga', file: kepalaOlahragaPhoto, name: kepalaOlahraga, fieldName: 'kepala_olahraga_photo' },
+      { position: 'kepala_kajian_pendidikan', file: kepalaKajianPendidikanPhoto, name: kepalaKajianPendidikan, fieldName: 'kepala_kajian_pendidikan_photo' },
     ]
 
     const photoUrls: Record<string, string | null> = {}
@@ -207,6 +219,12 @@ export async function PUT(request: NextRequest) {
       wakil_ketua_photo: photoUrls.wakil_ketua_photo,
       sekretaris_photo: photoUrls.sekretaris_photo,
       bendahara_photo: photoUrls.bendahara_photo,
+      kepala_seni_budaya_photo: photoUrls.kepala_seni_budaya_photo,
+      kepala_sosial_keagamaan_photo: photoUrls.kepala_sosial_keagamaan_photo,
+      kepala_infokom_photo: photoUrls.kepala_infokom_photo,
+      kepala_pengembangan_org_photo: photoUrls.kepala_pengembangan_org_photo,
+      kepala_olahraga_photo: photoUrls.kepala_olahraga_photo,
+      kepala_kajian_pendidikan_photo: photoUrls.kepala_kajian_pendidikan_photo,
       is_active: true,
       updated_by: authResult.user?.id,
       updated_at: new Date().toISOString(),

@@ -26,6 +26,7 @@ export default function NewTestimonialPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [districtSearch, setDistrictSearch] = useState('')
   const [isDistrictDropdownOpen, setIsDistrictDropdownOpen] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Filter districts based on search
@@ -61,12 +62,65 @@ export default function NewTestimonialPage() {
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setPhotoFile(file)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+      processPhotoFile(file)
+    }
+  }
+
+  const processPhotoFile = (file: File) => {
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp']
+    if (!validTypes.includes(file.type)) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload a JPEG, PNG, or WebP image",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Validate file size (2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please upload an image smaller than 2MB",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setPhotoFile(file)
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setPhotoPreview(reader.result as string)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    const files = e.dataTransfer.files
+    if (files && files.length > 0) {
+      processPhotoFile(files[0])
     }
   }
 
@@ -162,7 +216,17 @@ export default function NewTestimonialPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="photo">Photo (Optional)</Label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+              <div 
+                className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
+                  isDragging 
+                    ? 'border-emerald-500 bg-emerald-50' 
+                    : 'border-gray-300 hover:border-emerald-400'
+                }`}
+                onDragEnter={handleDragEnter}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
                 {photoPreview ? (
                   <div className="relative w-32 h-32 mx-auto">
                     <Image
@@ -181,12 +245,14 @@ export default function NewTestimonialPage() {
                   </div>
                 ) : (
                   <div className="text-center">
-                    <Upload className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                    <Upload className={`w-12 h-12 mx-auto mb-4 transition-colors ${
+                      isDragging ? 'text-emerald-600' : 'text-gray-400'
+                    }`} />
                     <label htmlFor="photo" className="cursor-pointer">
                       <span className="text-emerald-600 hover:text-emerald-700 font-medium">
-                        Upload a photo
+                        {isDragging ? 'Drop photo here' : 'Click to upload'}
                       </span>
-                      <span className="text-gray-500"> or leave empty for avatar</span>
+                      <span className="text-gray-500"> or drag and drop</span>
                     </label>
                     <input
                       id="photo"
