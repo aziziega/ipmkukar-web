@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Palette, Heart, Megaphone, Rocket, User, Trophy, BookOpen, Loader2 } from "lucide-react"
@@ -310,190 +311,202 @@ export default function StrukturSection() {
               }}
             >
               {/* Seni dan Budaya */}
-              <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  {structure.kepala_seni_budaya_photo ? (
-                    <Image
-                      src={structure.kepala_seni_budaya_photo}
-                      alt="Tim Seni dan Budaya"
-                      width={48}
-                      height={48}
-                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
-                      <Palette className="w-6 h-6 text-purple-600" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-text-primary mb-1">
-                      Seni dan Budaya
-                    </h3>
-                    <p className="text-sm text-text-secondary mb-3">
-                      Mengembangkan kreativitas dan melestarikan budaya Kutai
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-purple-100 text-purple-600 text-xs">Ketua</Badge>
-                      <p className="text-sm font-semibold text-text-primary">{structure.kepala_seni_budaya}</p>
+              <Link href="/struktur/seni-budaya">
+                <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    {structure.kepala_seni_budaya_photo ? (
+                      <Image
+                        src={structure.kepala_seni_budaya_photo}
+                        alt="Tim Seni dan Budaya"
+                        width={48}
+                        height={48}
+                        className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
+                        <Palette className="w-6 h-6 text-purple-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-text-primary mb-1">
+                        Seni dan Budaya
+                      </h3>
+                      <p className="text-sm text-text-secondary mb-3">
+                        Mengembangkan kreativitas dan melestarikan budaya Kutai
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-purple-100 text-purple-600 text-xs">Ketua</Badge>
+                        <p className="text-sm font-semibold text-text-primary">{structure.kepala_seni_budaya}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
 
               {/* Sosial dan Keagamaan */}
-              <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  {structure.kepala_sosial_keagamaan_photo ? (
-                    <Image
-                      src={structure.kepala_sosial_keagamaan_photo}
-                      alt="Tim Sosial dan Keagamaan"
-                      width={48}
-                      height={48}
-                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
-                      <Heart className="w-6 h-6 text-green-600" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-text-primary mb-1">
-                      Sosial dan Keagamaan
-                    </h3>
-                    <p className="text-sm text-text-secondary mb-3">
-                      Mendorong kepedulian sosial dan pembinaan spiritual anggota
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-green-100 text-green-600 text-xs">Ketua</Badge>
-                      <p className="text-sm font-semibold text-text-primary">{structure.kepala_sosial_keagamaan}</p>
+              <Link href="/struktur/sosial-keagamaan">
+                <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    {structure.kepala_sosial_keagamaan_photo ? (
+                      <Image
+                        src={structure.kepala_sosial_keagamaan_photo}
+                        alt="Tim Sosial dan Keagamaan"
+                        width={48}
+                        height={48}
+                        className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
+                        <Heart className="w-6 h-6 text-green-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-text-primary mb-1">
+                        Sosial dan Keagamaan
+                      </h3>
+                      <p className="text-sm text-text-secondary mb-3">
+                        Mendorong kepedulian sosial dan pembinaan spiritual anggota
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-green-100 text-green-600 text-xs">Ketua</Badge>
+                        <p className="text-sm font-semibold text-text-primary">{structure.kepala_sosial_keagamaan}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
 
               {/* Informasi dan Komunikasi */}
-              <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  {structure.kepala_infokom_photo ? (
-                    <Image
-                      src={structure.kepala_infokom_photo}
-                      alt="Tim Informasi dan Komunikasi"
-                      width={48}
-                      height={48}
-                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
-                      <Megaphone className="w-6 h-6 text-blue-600" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-text-primary mb-1">
-                      Informasi dan Komunikasi
-                    </h3>
-                    <p className="text-sm text-text-secondary mb-3">
-                      Mengelola media sosial, publikasi, dan dokumentasi
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-blue-100 text-blue-600 text-xs">Ketua</Badge>
-                      <p className="text-sm font-semibold text-text-primary">{structure.kepala_infokom}</p>
+              <Link href="/struktur/infokom">
+                <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    {structure.kepala_infokom_photo ? (
+                      <Image
+                        src={structure.kepala_infokom_photo}
+                        alt="Tim Informasi dan Komunikasi"
+                        width={48}
+                        height={48}
+                        className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                        <Megaphone className="w-6 h-6 text-blue-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-text-primary mb-1">
+                        Informasi dan Komunikasi
+                      </h3>
+                      <p className="text-sm text-text-secondary mb-3">
+                        Mengelola media sosial, publikasi, dan dokumentasi
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-blue-100 text-blue-600 text-xs">Ketua</Badge>
+                        <p className="text-sm font-semibold text-text-primary">{structure.kepala_infokom}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
 
               {/* Pengembangan Organisasi */}
-              <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  {structure.kepala_pengembangan_org_photo ? (
-                    <Image
-                      src={structure.kepala_pengembangan_org_photo}
-                      alt="Tim Pengembangan Organisasi"
-                      width={48}
-                      height={48}
-                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
-                      <Rocket className="w-6 h-6 text-amber-600" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-text-primary mb-1">
-                      Pengembangan Organisasi
-                    </h3>
-                    <p className="text-sm text-text-secondary mb-3">
-                      Merancang kaderisasi dan pengembangan kapasitas anggota
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-amber-100 text-amber-600 text-xs">Ketua</Badge>
-                      <p className="text-sm font-semibold text-text-primary">{structure.kepala_pengembangan_org}</p>
+              <Link href="/struktur/pengembangan-organisasi">
+                <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    {structure.kepala_pengembangan_org_photo ? (
+                      <Image
+                        src={structure.kepala_pengembangan_org_photo}
+                        alt="Tim Pengembangan Organisasi"
+                        width={48}
+                        height={48}
+                        className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
+                        <Rocket className="w-6 h-6 text-amber-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-text-primary mb-1">
+                        Pengembangan Organisasi
+                      </h3>
+                      <p className="text-sm text-text-secondary mb-3">
+                        Merancang kaderisasi dan pengembangan kapasitas anggota
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-amber-100 text-amber-600 text-xs">Ketua</Badge>
+                        <p className="text-sm font-semibold text-text-primary">{structure.kepala_pengembangan_org}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
 
               {/* Departemen Olahraga */}
-              <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  {structure.kepala_olahraga_photo ? (
-                    <Image
-                      src={structure.kepala_olahraga_photo}
-                      alt="Tim Olahraga"
-                      width={48}
-                      height={48}
-                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center">
-                      <Trophy className="w-6 h-6 text-red-600" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-text-primary mb-1">
-                      Departemen Olahraga
-                    </h3>
-                    <p className="text-sm text-text-secondary mb-3">
-                      Membangun semangat sportivitas dan kesehatan melalui kegiatan olahraga
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-red-100 text-red-600 text-xs">Ketua</Badge>
-                      <p className="text-sm font-semibold text-text-primary">{structure.kepala_olahraga}</p>
+              <Link href="/struktur/olahraga">
+                <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    {structure.kepala_olahraga_photo ? (
+                      <Image
+                        src={structure.kepala_olahraga_photo}
+                        alt="Tim Olahraga"
+                        width={48}
+                        height={48}
+                        className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center">
+                        <Trophy className="w-6 h-6 text-red-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-text-primary mb-1">
+                        Departemen Olahraga
+                      </h3>
+                      <p className="text-sm text-text-secondary mb-3">
+                        Membangun semangat sportivitas dan kesehatan melalui kegiatan olahraga
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-red-100 text-red-600 text-xs">Ketua</Badge>
+                        <p className="text-sm font-semibold text-text-primary">{structure.kepala_olahraga}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
 
               {/* Kajian Strategi dan Pendidikan */}
-              <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  {structure.kepala_kajian_pendidikan_photo ? (
-                    <Image
-                      src={structure.kepala_kajian_pendidikan_photo}
-                      alt="Tim Kajian dan Pendidikan"
-                      width={48}
-                      height={48}
-                      className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center">
-                      <BookOpen className="w-6 h-6 text-indigo-600" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-text-primary mb-1">
-                      Kajian Strategi dan Pendidikan
-                    </h3>
-                    <p className="text-sm text-text-secondary mb-3">
-                      Mengembangkan kapasitas intelektual melalui kajian dan riset
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-indigo-100 text-indigo-600 text-xs">Ketua</Badge>
-                      <p className="text-sm font-semibold text-text-primary">{structure.kepala_kajian_pendidikan}</p>
+              <Link href="/struktur/kajian-pendidikan">
+                <Card className="p-6 bg-white border border-border-custom hover:border-emerald hover:shadow-lg transition-all cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    {structure.kepala_kajian_pendidikan_photo ? (
+                      <Image
+                        src={structure.kepala_kajian_pendidikan_photo}
+                        alt="Tim Kajian dan Pendidikan"
+                        width={48}
+                        height={48}
+                        className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center">
+                        <BookOpen className="w-6 h-6 text-indigo-600" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-text-primary mb-1">
+                        Kajian Strategi dan Pendidikan
+                      </h3>
+                      <p className="text-sm text-text-secondary mb-3">
+                        Mengembangkan kapasitas intelektual melalui kajian dan riset
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-indigo-100 text-indigo-600 text-xs">Ketua</Badge>
+                        <p className="text-sm font-semibold text-text-primary">{structure.kepala_kajian_pendidikan}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </motion.div>
           </motion.div>
         </div>

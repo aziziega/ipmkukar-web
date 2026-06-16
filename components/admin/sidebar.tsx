@@ -90,6 +90,11 @@ const navCategories: NavCategory[] = [
         href: "/admin/dashboard/struktur",
         icon: Users,
       },
+      {
+        title: "Departemen",
+        href: "/admin/dashboard/departemen",
+        icon: FolderKanban,
+      },
     ],
   },
   {
