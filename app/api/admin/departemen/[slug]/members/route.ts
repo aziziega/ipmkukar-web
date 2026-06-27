@@ -25,7 +25,7 @@ interface MemberInput {
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params
@@ -63,26 +63,16 @@ export async function POST(
         
         if (!name || !position) continue
 
-        // Check if kepala already exists
+        // Block creating Kepala - must be managed via Struktur Organisasi
         if (position === 'Kepala Departemen') {
-          const { data: existingKepala } = await supabase
-            .from('department_members')
-            .select('id')
-            .eq('department_id', department.id)
-            .eq('position', 'Kepala Departemen')
-            .eq('is_active', true)
-            .maybeSingle()
-
-          if (existingKepala) {
-            return NextResponse.json(
-              { 
-                success: false, 
-                error: 'Kepala already exists',
-                message: `${department.name} already has a Kepala. Please remove the existing one first.`
-              },
-              { status: 400 }
-            )
-          }
+          return NextResponse.json(
+            { 
+              success: false, 
+              error: 'Kepala harus dikelola di Struktur Organisasi',
+              message: 'Kepala Departemen dikelola melalui halaman Struktur Organisasi. Silakan edit di /admin/dashboard/struktur/edit'
+            },
+            { status: 400 }
+          )
         }
 
         // Upload photo if provided
@@ -166,26 +156,16 @@ export async function POST(
         )
       }
 
-      // Check if kepala already exists
+      // Block creating Kepala - must be managed via Struktur Organisasi
       if (position === 'Kepala Departemen') {
-        const { data: existingKepala } = await supabase
-          .from('department_members')
-          .select('id')
-          .eq('department_id', department.id)
-          .eq('position', 'Kepala Departemen')
-          .eq('is_active', true)
-          .maybeSingle()
-
-        if (existingKepala) {
-          return NextResponse.json(
-            { 
-              success: false, 
-              error: 'Kepala already exists',
-              message: `${department.name} already has a Kepala. Please remove the existing one first.`
-            },
-            { status: 400 }
-          )
-        }
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: 'Kepala harus dikelola di Struktur Organisasi',
+            message: 'Kepala Departemen dikelola melalui halaman Struktur Organisasi. Silakan edit di /admin/dashboard/struktur/edit'
+          },
+          { status: 400 }
+        )
       }
 
       // Upload photo if provided

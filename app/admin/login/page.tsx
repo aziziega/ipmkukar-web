@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, Loader2, Shield } from "lucide-react"
+import { AlertCircle, Loader2, Shield, Eye, EyeOff } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 export default function AdminLoginPage() {
@@ -19,6 +19,7 @@ export default function AdminLoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -142,16 +143,31 @@ export default function AdminLoginPage() {
               <Label htmlFor="password" className="text-sm font-medium text-gray-700">
                 Password
               </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={isLoading}
-                className="h-11 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={isLoading}
+                  className="h-11 pr-10 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
+                  disabled={isLoading}
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Remember Me Checkbox */}
@@ -203,7 +219,7 @@ export default function AdminLoginPage() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-6 text-center text-sm text-gray-600"
         >
-          <p>© 2024 IPM Kukar Yogyakarta. All rights reserved.</p>
+          <p>© 2026 IPM Kukar Yogyakarta. All rights reserved.</p>
         </motion.div>
       </motion.div>
     </div>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { getDepartmentHeadData, DepartmentHeadData } from '@/lib/department-mapping'
 
 // Initialize Supabase client for admin operations
 const supabase = createClient(
@@ -38,7 +39,7 @@ interface DepartmentMember {
 
 interface DepartmentDetail {
   department: Department
-  kepala: DepartmentMember | null
+  kepala: DepartmentHeadData | null
   anggota: DepartmentMember[]
 }
 
@@ -49,7 +50,7 @@ interface DepartmentDetail {
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params
@@ -80,11 +81,27 @@ export async function GET(
       )
     }
 
+    // Fetch organizational structure to get kepala
+    const { data: structure, error: structureError } = await supabase
+      .from('organizational_structure')
+      .select('*')
+      .eq('is_active', true)
+      .single()
+
+    if (structureError) {
+      console.error('Error fetching organizational structure:', structureError)
+      // Continue without kepala if structure not found
+    }
+
+    // Get kepala from organizational structure (not from department_members)
+    const kepala = structure ? getDepartmentHeadData(structure, slug) : null
+
     // Fetch all members for this department
     const { data: members, error: membersError } = await supabase
       .from('department_members')
       .select('*')
       .eq('department_id', department.id)
+      .eq('is_active', true)
       .order('order_index', { ascending: true })
 
     if (membersError) {
@@ -95,9 +112,9 @@ export async function GET(
       )
     }
 
-    // Separate kepala and anggota
-    const kepala = members?.find(m => m.position === 'Kepala Departemen' && m.is_active) || null
-    const anggota = members?.filter(m => m.position === 'Anggota' && m.is_active) || []
+    // Filter out any remaining Kepala entries (should not exist after migration)
+    // Only return Anggota members
+    const anggota = members?.filter(m => m.position !== 'Kepala Departemen') || []
 
     const response: DepartmentDetail = {
       department,
@@ -124,17 +141,17 @@ export async function GET(
 
 /**
  * PUT /api/admin/departemen/[slug]
- * Update department information (currently supports period update)
+ * Update department information (supports period and description updates)
  * Requires authentication
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params
     const body = await request.json()
-    const { period } = body
+    const { period, description } = body
 
     // Validate slug
     if (!slug || typeof slug !== 'string') {
@@ -144,10 +161,10 @@ export async function PUT(
       )
     }
 
-    // Validate period
-    if (!period || typeof period !== 'string' || !period.trim()) {
+    // At least one field must be provided
+    if (!period && description === undefined) {
       return NextResponse.json(
-        { success: false, error: 'Period is required' },
+        { success: false, error: 'At least one field (period or description) is required' },
         { status: 400 }
       )
     }
@@ -166,25 +183,47 @@ export async function PUT(
       )
     }
 
-    // Update period
+    // Build update object dynamically
+    const updateData: any = {
+      updated_at: new Date().toISOString()
+    }
+
+    if (period !== undefined && period !== null) {
+      if (typeof period !== 'string' || !period.trim()) {
+        return NextResponse.json(
+          { success: false, error: 'Period must be a non-empty string' },
+          { status: 400 }
+        )
+      }
+      updateData.period = period.trim()
+    }
+
+    if (description !== undefined) {
+      if (description !== null && typeof description !== 'string') {
+        return NextResponse.json(
+          { success: false, error: 'Description must be a string or null' },
+          { status: 400 }
+        )
+      }
+      updateData.description = description ? description.trim() : null
+    }
+
+    // Update department
     const { error: updateError } = await supabase
       .from('departments')
-      .update({ 
-        period: period.trim(),
-        updated_at: new Date().toISOString()
-      })
+      .update(updateData)
       .eq('slug', slug)
 
     if (updateError) {
       console.error('Error updating department:', updateError)
       return NextResponse.json(
-        { success: false, error: 'Failed to update period' },
+        { success: false, error: 'Failed to update department' },
         { status: 500 }
       )
     }
 
     return NextResponse.json(
-      { success: true, message: 'Period updated successfully' },
+      { success: true, message: 'Department updated successfully' },
       { status: 200 }
     )
   } catch (error) {

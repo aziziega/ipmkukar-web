@@ -36,8 +36,19 @@ interface OrganizationalStructure {
   kepala_kajian_pendidikan_photo: string | null
 }
 
+interface Department {
+  id: string
+  slug: string
+  name: string
+  full_name: string
+  description: string | null
+  color: string
+  icon: string
+}
+
 export default function StrukturSection() {
   const [structure, setStructure] = useState<OrganizationalStructure | null>(null)
+  const [departments, setDepartments] = useState<Department[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -45,8 +56,13 @@ export default function StrukturSection() {
       try {
         const response = await fetch('/api/struktur')
         const data = await response.json()
-        if (data.success && data.structure) {
-          setStructure(data.structure)
+        if (data.success) {
+          if (data.structure) {
+            setStructure(data.structure)
+          }
+          if (data.departments) {
+            setDepartments(data.departments)
+          }
         }
       } catch (error) {
         console.error('Failed to fetch organizational structure:', error)
@@ -56,6 +72,12 @@ export default function StrukturSection() {
     }
     fetchStructure()
   }, [])
+
+  // Helper function to get department description by slug
+  const getDepartmentDescription = (slug: string, fallback: string): string => {
+    const dept = departments.find(d => d.slug === slug)
+    return dept?.description || fallback
+  }
 
   if (isLoading) {
     return (
@@ -323,7 +345,7 @@ export default function StrukturSection() {
                         className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
                         <Palette className="w-6 h-6 text-purple-600" />
                       </div>
                     )}
@@ -332,7 +354,7 @@ export default function StrukturSection() {
                         Seni dan Budaya
                       </h3>
                       <p className="text-sm text-text-secondary mb-3">
-                        Mengembangkan kreativitas dan melestarikan budaya Kutai
+                        {getDepartmentDescription('seni-budaya', 'Mengembangkan kreativitas dan melestarikan budaya Kutai')}
                       </p>
                       <div className="flex items-center gap-2">
                         <Badge className="bg-purple-100 text-purple-600 text-xs">Ketua</Badge>
@@ -356,7 +378,7 @@ export default function StrukturSection() {
                         className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
                         <Heart className="w-6 h-6 text-green-600" />
                       </div>
                     )}
@@ -365,7 +387,7 @@ export default function StrukturSection() {
                         Sosial dan Keagamaan
                       </h3>
                       <p className="text-sm text-text-secondary mb-3">
-                        Mendorong kepedulian sosial dan pembinaan spiritual anggota
+                        {getDepartmentDescription('sosial-keagamaan', 'Mendorong kepedulian sosial dan pembinaan spiritual anggota')}
                       </p>
                       <div className="flex items-center gap-2">
                         <Badge className="bg-green-100 text-green-600 text-xs">Ketua</Badge>
@@ -389,7 +411,7 @@ export default function StrukturSection() {
                         className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                         <Megaphone className="w-6 h-6 text-blue-600" />
                       </div>
                     )}
@@ -398,7 +420,7 @@ export default function StrukturSection() {
                         Informasi dan Komunikasi
                       </h3>
                       <p className="text-sm text-text-secondary mb-3">
-                        Mengelola media sosial, publikasi, dan dokumentasi
+                        {getDepartmentDescription('infokom', 'Mengelola media sosial, publikasi, dan dokumentasi')}
                       </p>
                       <div className="flex items-center gap-2">
                         <Badge className="bg-blue-100 text-blue-600 text-xs">Ketua</Badge>
@@ -422,7 +444,7 @@ export default function StrukturSection() {
                         className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
                         <Rocket className="w-6 h-6 text-amber-600" />
                       </div>
                     )}
@@ -431,7 +453,7 @@ export default function StrukturSection() {
                         Pengembangan Organisasi
                       </h3>
                       <p className="text-sm text-text-secondary mb-3">
-                        Merancang kaderisasi dan pengembangan kapasitas anggota
+                        {getDepartmentDescription('pengembangan-organisasi', 'Merancang kaderisasi dan pengembangan kapasitas anggota')}
                       </p>
                       <div className="flex items-center gap-2">
                         <Badge className="bg-amber-100 text-amber-600 text-xs">Ketua</Badge>
@@ -455,7 +477,7 @@ export default function StrukturSection() {
                         className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
                         <Trophy className="w-6 h-6 text-red-600" />
                       </div>
                     )}
@@ -464,7 +486,7 @@ export default function StrukturSection() {
                         Departemen Olahraga
                       </h3>
                       <p className="text-sm text-text-secondary mb-3">
-                        Membangun semangat sportivitas dan kesehatan melalui kegiatan olahraga
+                        {getDepartmentDescription('olahraga', 'Membangun semangat sportivitas dan kesehatan melalui kegiatan olahraga')}
                       </p>
                       <div className="flex items-center gap-2">
                         <Badge className="bg-red-100 text-red-600 text-xs">Ketua</Badge>
@@ -488,7 +510,7 @@ export default function StrukturSection() {
                         className="flex-shrink-0 w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
                         <BookOpen className="w-6 h-6 text-indigo-600" />
                       </div>
                     )}
@@ -497,7 +519,7 @@ export default function StrukturSection() {
                         Kajian Strategi dan Pendidikan
                       </h3>
                       <p className="text-sm text-text-secondary mb-3">
-                        Mengembangkan kapasitas intelektual melalui kajian dan riset
+                        {getDepartmentDescription('kajian-pendidikan', 'Mengembangkan kapasitas intelektual melalui kajian dan riset')}
                       </p>
                       <div className="flex items-center gap-2">
                         <Badge className="bg-indigo-100 text-indigo-600 text-xs">Ketua</Badge>

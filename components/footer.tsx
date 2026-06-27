@@ -39,32 +39,32 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wide text-sm">Navigasi</h4>
             <div className="space-y-3">
-              <Link 
-                href="/home" 
+              <Link
+                href="/home"
                 className="block text-white/70 hover:text-gold transition-colors text-sm"
               >
                 Home
               </Link>
-              <Link 
-                href="/visi-misi" 
+              <Link
+                href="/visi-misi"
                 className="block text-white/70 hover:text-gold transition-colors text-sm"
               >
                 Visi & Misi
               </Link>
-              <Link 
-                href="/struktur" 
+              <Link
+                href="/struktur"
                 className="block text-white/70 hover:text-gold transition-colors text-sm"
               >
                 Struktur Organisasi
               </Link>
-              <Link 
-                href="/home#proker" 
+              <Link
+                href="/home#proker"
                 className="block text-white/70 hover:text-gold transition-colors text-sm"
               >
                 Program Kerja
               </Link>
-              <Link 
-                href="/home#kegiatan" 
+              <Link
+                href="/home#kegiatan"
                 className="block text-white/70 hover:text-gold transition-colors text-sm"
               >
                 Kegiatan
@@ -81,12 +81,12 @@ export default function Footer() {
                 <MapPin size={16} className="text-gold mt-1 flex-shrink-0" />
                 <span>Yogyakarta, Indonesia</span>
               </div>
-              
+
               {/* Email */}
               <div className="flex items-start gap-3 text-white/70 text-sm">
                 <Mail size={16} className="text-gold mt-1 flex-shrink-0" />
-                <a 
-                  href="mailto:ipmkukaryogyakarta@gmail.com" 
+                <a
+                  href="mailto:ipmkukaryogyakarta@gmail.com"
                   className="hover:text-gold transition-colors break-all"
                 >
                   ipmkukaryogyakarta@gmail.com
@@ -97,28 +97,28 @@ export default function Footer() {
               <div>
                 <p className="text-xs text-white/50 mb-3 uppercase tracking-wide">Follow Us</p>
                 <div className="flex gap-3">
-                  <a 
-                    href="https://www.instagram.com/ipm_kukarjogja/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href="https://www.instagram.com/ipm_kukarjogja/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-9 h-9 rounded-full bg-white/10 hover:bg-gold flex items-center justify-center transition-all group"
                   >
                     <Instagram size={16} className="text-white group-hover:scale-110 transition-transform" />
                   </a>
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="w-9 h-9 rounded-full bg-white/10 hover:bg-gold flex items-center justify-center transition-all group"
                   >
                     <FaTiktok size={14} className="text-white group-hover:scale-110 transition-transform" />
                   </a>
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="w-9 h-9 rounded-full bg-white/10 hover:bg-gold flex items-center justify-center transition-all group"
                   >
                     <Youtube size={16} className="text-white group-hover:scale-110 transition-transform" />
                   </a>
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="w-9 h-9 rounded-full bg-white/10 hover:bg-gold flex items-center justify-center transition-all group"
                   >
                     <FaWhatsapp size={16} className="text-white group-hover:scale-110 transition-transform" />
@@ -134,11 +134,11 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/50">
             <p>© 2026 IPM Kukar Yogyakarta. All rights reserved.</p>
             <p>
-              Design by{" "}
-              <a 
-                href="https://aziziem.vercel.app" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              Developed by{" "}
+              <a
+                href="https://aziziem.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gold hover:text-gold-light transition-colors font-semibold"
               >
                 Azizi

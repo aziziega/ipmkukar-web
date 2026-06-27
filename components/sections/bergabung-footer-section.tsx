@@ -315,7 +315,7 @@ export default function BergabungFooterSection() {
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/50">
               <p>© 2026 IPM Kukar Yogyakarta. All rights reserved.</p>
               <p>
-                Design by{" "}
+                Developed by{" "}
                 <a
                   href="https://aziziem.vercel.app"
                   target="_blank"

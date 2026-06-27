@@ -30,6 +30,16 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { UpgradeV2Modal } from "@/components/admin/upgrade-v2-modal"
 import { useState } from "react"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface SidebarProps {
   userRole: "super_admin" | "admin"
@@ -154,8 +164,11 @@ const navCategories: NavCategory[] = [
 export function Sidebar({ userRole, isOpen, onClose }: SidebarProps) {
   const pathname = usePathname()
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   const handleLogout = async () => {
+    setIsLoggingOut(true)
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
       window.location.href = '/admin/login'
@@ -220,7 +233,7 @@ export function Sidebar({ userRole, isOpen, onClose }: SidebarProps) {
             </Badge>
           </div>
           <p className="text-[9px] text-gray-400 mt-0.5">
-            LAST UPDATE: {new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }).toUpperCase()} {new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false })} WIB
+            LAST UPDATE: 27 Juni 2026 13.03 WIB
           </p>
         </div>
 
@@ -331,9 +344,10 @@ export function Sidebar({ userRole, isOpen, onClose }: SidebarProps) {
 
           {/* Logout Button */}
           <Button
-            onClick={handleLogout}
+            onClick={() => setShowLogoutConfirm(true)}
             variant="outline"
             className="w-full flex items-center justify-center gap-2 text-gray-700 hover:text-red-600 hover:border-red-600 transition-colors"
+            disabled={isLoggingOut}
           >
             <LogOut className="w-4 h-4" />
             <span className="text-sm font-medium">Keluar</span>
@@ -351,6 +365,31 @@ export function Sidebar({ userRole, isOpen, onClose }: SidebarProps) {
         isOpen={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
       />
+
+      {/* Logout Confirmation Modal */}
+      <AlertDialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Konfirmasi Keluar</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin keluar dari Admin Dashboard? Anda harus masuk kembali untuk mengakses halaman ini.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isLoggingOut}>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault()
+                handleLogout()
+              }}
+              disabled={isLoggingOut}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {isLoggingOut ? "Keluar..." : "Keluar"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

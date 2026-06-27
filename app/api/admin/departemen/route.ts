@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { getDepartmentHeadData } from '@/lib/department-mapping'
 
 // Initialize Supabase client for admin operations
 const supabase = createClient(
@@ -51,11 +52,24 @@ export async function GET() {
       )
     }
 
-    // Fetch member counts for each department
+    // Fetch organizational structure for kepala data
+    const { data: structure, error: structureError } = await supabase
+      .from('organizational_structure')
+      .select('*')
+      .eq('is_active', true)
+      .single()
+
+    if (structureError) {
+      console.error('Error fetching organizational structure:', structureError)
+      // Continue without structure if error
+    }
+
+    // Fetch anggota counts for each department (excluding Kepala)
     const { data: memberCounts, error: countError } = await supabase
       .from('department_members')
       .select('department_id, position')
       .eq('is_active', true)
+      .neq('position', 'Kepala Departemen') // Exclude Kepala since they're in organizational_structure
 
     if (countError) {
       console.error('Error fetching member counts:', countError)
@@ -64,8 +78,12 @@ export async function GET() {
 
     // Calculate stats for each department
     const departmentsWithStats: DepartmentWithStats[] = departments.map(dept => {
+      // Check if kepala exists in organizational structure
+      const kepalaData = structure ? getDepartmentHeadData(structure, dept.slug) : null
+      const kepalaCount = kepalaData ? 1 : 0
+      
+      // Count anggota from department_members
       const deptMembers = memberCounts?.filter(m => m.department_id === dept.id) || []
-      const kepalaCount = deptMembers.filter(m => m.position === 'Kepala Departemen').length
       const anggotaCount = deptMembers.filter(m => m.position === 'Anggota').length
 
       return {

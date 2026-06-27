@@ -14,7 +14,7 @@ const supabase = createClient(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { slug: string; id: string } }
+  { params }: { params: Promise<{ slug: string; id: string }> }
 ) {
   try {
     const { slug, id } = await params
@@ -195,7 +195,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { slug: string; id: string } }
+  { params }: { params: Promise<{ slug: string; id: string }> }
 ) {
   try {
     const { slug, id } = await params

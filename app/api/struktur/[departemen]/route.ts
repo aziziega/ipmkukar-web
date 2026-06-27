@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { getDepartmentHeadData, DepartmentHeadData } from '@/lib/department-mapping'
 
 interface Department {
   id: string
@@ -26,13 +27,13 @@ interface DepartmentMember {
 
 interface DepartmentDetail {
   department: Department
-  kepala: DepartmentMember | null
+  kepala: DepartmentHeadData | null
   anggota: DepartmentMember[]
 }
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { departemen: string } }
+  { params }: { params: Promise<{ departemen: string }> }
 ) {
   try {
     const supabase = createClient(
@@ -68,6 +69,21 @@ export async function GET(
       )
     }
 
+    // Fetch organizational structure to get kepala
+    const { data: structure, error: structureError } = await supabase
+      .from('organizational_structure')
+      .select('*')
+      .eq('is_active', true)
+      .single()
+
+    if (structureError) {
+      console.error('Error fetching organizational structure:', structureError)
+      // Continue without kepala if structure not found
+    }
+
+    // Get kepala from organizational structure (not from department_members)
+    const kepala = structure ? getDepartmentHeadData(structure, departemen) : null
+
     // Fetch all members for this department
     const { data: members, error: membersError } = await supabase
       .from('department_members')
@@ -84,9 +100,9 @@ export async function GET(
       )
     }
 
-    // Separate Kepala and Anggota
-    const kepala = members?.find(m => m.position === 'Kepala Departemen') || null
-    const anggota = members?.filter(m => m.position === 'Anggota') || []
+    // Filter out any remaining Kepala entries (should not exist after migration)
+    // Only return Anggota members
+    const anggota = members?.filter(m => m.position !== 'Kepala Departemen') || []
 
     const response: DepartmentDetail = {
       department: {

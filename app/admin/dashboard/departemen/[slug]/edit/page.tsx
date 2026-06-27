@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Loader2, Save, X, Upload, User, Trash2, Plus, ArrowLeft } from "lucide-react"
+import { Loader2, Save, X, Upload, User, Trash2, Plus, ArrowLeft, ArrowRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -38,6 +38,7 @@ interface Department {
   slug: string
   name: string
   full_name: string
+  description: string | null
   color: string
   period: string
 }
@@ -73,15 +74,10 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
   const [isSaving, setIsSaving] = useState(false)
   const [department, setDepartment] = useState<Department | null>(null)
   const [period, setPeriod] = useState("")
+  const [description, setDescription] = useState("")
   
-  // Kepala state
-  const [kepala, setKepala] = useState<DepartmentMember | null>(null)
-  const [kepalaName, setKepalaName] = useState("")
-  const [kepalaPosition, setKepalaPosition] = useState("Kepala Departemen")
-  const [kepalaNim, setKepalaNim] = useState("")
-  const [kepalaPhoto, setKepalaPhoto] = useState<File | null>(null)
-  const [kepalaPhotoPreview, setKepalaPhotoPreview] = useState<string | null>(null)
-  const [kepalaDeletePhoto, setKepalaDeletePhoto] = useState(false)
+  // Kepala data (read-only from organizational structure)
+  const [kepala, setKepala] = useState<{ name: string; photo: string | null } | null>(null)
   
   // Anggota state
   const [anggota, setAnggota] = useState<DepartmentMember[]>([])
@@ -124,16 +120,9 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
       if (data.success) {
         setDepartment(data.data.department)
         setPeriod(data.data.department.period)
-        setKepala(data.data.kepala)
+        setDescription(data.data.department.description || "")
+        setKepala(data.data.kepala) // Read-only from structure
         setAnggota(data.data.anggota)
-        
-        // Set kepala form if exists
-        if (data.data.kepala) {
-          setKepalaName(data.data.kepala.name)
-          setKepalaPosition(data.data.kepala.position)
-          setKepalaNim(data.data.kepala.nim || "")
-          setKepalaPhotoPreview(data.data.kepala.photo)
-        }
       } else {
         toast({
           title: "Error",
@@ -158,16 +147,10 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
     try {
       const file = blobToFile(croppedBlob, 'cropped-photo.jpg')
       
-      // Set the cropped photo based on position
-      if (currentCropPosition === 'kepala') {
-        setKepalaPhoto(file)
-        setKepalaPhotoPreview(URL.createObjectURL(file))
-        setKepalaDeletePhoto(false)
-      } else if (currentCropPosition === 'edit') {
-        setEditPhoto(file)
-        setEditPhotoPreview(URL.createObjectURL(file))
-        setEditDeletePhoto(false)
-      }
+      // Set the cropped photo for member edit
+      setEditPhoto(file)
+      setEditPhotoPreview(URL.createObjectURL(file))
+      setEditDeletePhoto(false)
       
       // Close modal and reset state
       setIsCropModalOpen(false)
@@ -188,125 +171,10 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
     }
   }
 
-  const handleKepalaPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setCurrentCropImage(URL.createObjectURL(file))
-      setCurrentCropPosition('kepala')
-      setIsCropModalOpen(true)
-    }
-  }
-
-  const handleKepalaPhotoDelete = () => {
-    setKepalaPhoto(null)
-    setKepalaPhotoPreview(null)
-    setKepalaDeletePhoto(true)
-  }
-
-  const handleSaveKepala = async () => {
-    if (!kepalaName.trim()) {
-      toast({
-        title: "Error",
-        description: "Nama kepala wajib diisi",
-        variant: "destructive",
-      })
-      return
-    }
-
-    try {
-      setIsSaving(true)
-      const formData = new FormData()
-      formData.append('name', kepalaName)
-      formData.append('position', kepalaPosition)
-      formData.append('nim', kepalaNim)
-      if (kepalaPhoto) {
-        formData.append('photo', kepalaPhoto)
-      }
-      if (kepalaDeletePhoto) {
-        formData.append('deletePhoto', 'true')
-      }
-
-      let response
-      if (kepala) {
-        // Update existing kepala
-        response = await fetch(`/api/admin/departemen/${slug}/members/${kepala.id}`, {
-          method: 'PUT',
-          body: formData,
-        })
-      } else {
-        // Add new kepala
-        response = await fetch(`/api/admin/departemen/${slug}/members`, {
-          method: 'POST',
-          body: formData,
-        })
-      }
-
-      const data = await response.json()
-
-      if (data.success) {
-        toast({
-          title: "Success",
-          description: kepala ? "Kepala updated successfully" : "Kepala added successfully",
-        })
-        fetchDepartmentData()
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || data.message || "Failed to save kepala",
-          variant: "destructive",
-        })
-      }
-    } catch (error) {
-      console.error('Error saving kepala:', error)
-      toast({
-        title: "Error",
-        description: "Failed to save kepala",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSaving(false)
-    }
-  }
-
-  const handleDeleteKepala = async () => {
-    if (!kepala) return
-
-    try {
-      setIsSaving(true)
-      const response = await fetch(`/api/admin/departemen/${params.slug}/members/${kepala.id}`, {
-        method: 'DELETE',
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        toast({
-          title: "Success",
-          description: "Kepala deleted successfully",
-        })
-        setKepala(null)
-        setKepalaName("")
-        setKepalaNim("")
-        setKepalaPhoto(null)
-        setKepalaPhotoPreview(null)
-        fetchDepartmentData()
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || "Failed to delete kepala",
-          variant: "destructive",
-        })
-      }
-    } catch (error) {
-      console.error('Error deleting kepala:', error)
-      toast({
-        title: "Error",
-        description: "Failed to delete kepala",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSaving(false)
-    }
+  const handleEditPhoto = (photoUrl: string) => {
+    setCurrentCropImage(photoUrl)
+    setCurrentCropPosition('edit')
+    setIsCropModalOpen(true)
   }
 
   const handleAddBatchRow = () => {
@@ -472,104 +340,48 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
         </div>
       </div>
 
-      {/* Kepala Section */}
+      {/* Department Description Section */}
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Kepala Departemen</span>
-            {kepala && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleDeleteKepala}
-                disabled={isSaving}
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete Kepala
-              </Button>
-            )}
-          </CardTitle>
+          <CardTitle>Keterangan Departemen</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Photo Upload */}
+        <CardContent className="space-y-4">
           <div>
-            <Label>Photo</Label>
-            <div className="mt-2 flex items-center gap-4">
-              {kepalaPhotoPreview ? (
-                <div className="relative">
-                  <Image
-                    src={kepalaPhotoPreview}
-                    alt="Kepala photo"
-                    width={100}
-                    height={100}
-                    className="rounded-full object-cover border-2 border-gray-200"
-                  />
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="absolute -top-2 -right-2 h-8 w-8 rounded-full"
-                    onClick={handleKepalaPhotoDelete}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center">
-                  <User className="w-12 h-12 text-gray-400" />
-                </div>
-              )}
-              <div>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleKepalaPhotoChange}
-                  className="max-w-xs"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Upload a photo (optional, max 2MB)
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Name */}
-          <div>
-            <Label htmlFor="kepala-name">Name *</Label>
-            <Input
-              id="kepala-name"
-              value={kepalaName}
-              onChange={(e) => setKepalaName(e.target.value)}
-              placeholder="Enter kepala name"
+            <Label htmlFor="description">Deskripsi</Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Masukkan deskripsi atau keterangan departemen (contoh: Mengembangkan kreativitas dan melestarikan budaya Kutai)"
+              rows={4}
+              className="resize-none"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Deskripsi ini akan ditampilkan di halaman public struktur organisasi
+            </p>
           </div>
-
-          {/* Position */}
-          <div>
-            <Label htmlFor="kepala-position">Position</Label>
-            <Select value={kepalaPosition} onValueChange={setKepalaPosition}>
-              <SelectTrigger id="kepala-position">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Kepala Departemen">Kepala Departemen</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* NIM */}
-          <div>
-            <Label htmlFor="kepala-nim">NIM (Optional)</Label>
-            <Input
-              id="kepala-nim"
-              value={kepalaNim}
-              onChange={(e) => setKepalaNim(e.target.value)}
-              placeholder="Enter NIM"
-            />
-          </div>
-
-          {/* Save Button */}
           <Button
-            onClick={handleSaveKepala}
+            onClick={async () => {
+              try {
+                setIsSaving(true)
+                const response = await fetch(`/api/admin/departemen/${slug}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ description }),
+                })
+                const data = await response.json()
+                if (data.success) {
+                  toast({ title: "Success", description: "Deskripsi berhasil diperbarui" })
+                  fetchDepartmentData()
+                } else {
+                  toast({ title: "Error", description: data.error, variant: "destructive" })
+                }
+              } catch (error) {
+                toast({ title: "Error", description: "Gagal memperbarui deskripsi", variant: "destructive" })
+              } finally {
+                setIsSaving(false)
+              }
+            }}
             disabled={isSaving}
             className="w-full bg-emerald-600 hover:bg-emerald-700"
           >
@@ -578,10 +390,56 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
             ) : (
               <Save className="w-4 h-4 mr-2" />
             )}
-            {kepala ? 'Update Kepala' : 'Add Kepala'}
+            Simpan Deskripsi
           </Button>
         </CardContent>
       </Card>
+
+      {/* Kepala Departemen (Read-Only from Struktur Organisasi) */}
+      {kepala && (
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Kepala Departemen</span>
+              <Badge variant="outline" className="text-xs">
+                Data dari Struktur Organisasi
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+              {kepala.photo ? (
+                <Image
+                  src={kepala.photo}
+                  alt={kepala.name}
+                  width={60}
+                  height={60}
+                  className="w-15 h-15 rounded-full object-cover border-2 border-emerald"
+                />
+              ) : (
+                <div className="w-15 h-15 rounded-full bg-emerald/10 flex items-center justify-center">
+                  <User className="w-8 h-8 text-emerald" />
+                </div>
+              )}
+              <div className="flex-1">
+                <p className="font-semibold text-lg">{kepala.name}</p>
+                <p className="text-sm text-gray-600">Kepala Departemen</p>
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => router.push('/admin/dashboard/struktur/edit')}
+                className="gap-2"
+              >
+                Edit di Struktur
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500 mt-3">
+              💡 Untuk mengubah Kepala Departemen, silakan edit di halaman <strong>Struktur Organisasi</strong>
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Anggota Section */}
       <Card>
@@ -796,30 +654,41 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
               <Label>Photo</Label>
               <div className="mt-2 flex items-center gap-4">
                 {editPhotoPreview ? (
-                  <div className="relative">
+                  <div className="flex items-center gap-3">
                     <Image
                       src={editPhotoPreview}
                       alt="Member photo"
-                      width={80}
-                      height={80}
-                      className="rounded-full object-cover"
+                      width={60}
+                      height={60}
+                      className="w-15 h-15 rounded-full object-cover border-2 border-gray-200"
                     />
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
-                      onClick={() => {
-                        setEditPhoto(null)
-                        setEditPhotoPreview(null)
-                        setEditDeletePhoto(true)
-                      }}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditPhoto(editPhotoPreview)}
+                      >
+                        {editPhoto ? 'Re-crop' : 'Edit'}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setEditPhoto(null)
+                          setEditPhotoPreview(null)
+                          setEditDeletePhoto(true)
+                        }}
+                        className="bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
-                    <User className="w-10 h-10 text-gray-400" />
+                  <div className="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center">
+                    <User className="w-8 h-8 text-gray-400" />
                   </div>
                 )}
                 <Input
@@ -867,7 +736,7 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
                 if (editPhoto) formData.append('photo', editPhoto)
                 if (editDeletePhoto) formData.append('deletePhoto', 'true')
 
-                const response = await fetch(`/api/admin/departemen/${params.slug}/members/${editingMember.id}`, {
+                const response = await fetch(`/api/admin/departemen/${slug}/members/${editingMember.id}`, {
                   method: 'PUT',
                   body: formData,
                 })
@@ -901,7 +770,7 @@ export default function EditDepartemenPage({ params }: { params: Promise<{ slug:
             <AlertDialogAction
               onClick={async () => {
                 if (!deletingMemberId) return
-                const response = await fetch(`/api/admin/departemen/${params.slug}/members/${deletingMemberId}`, {
+                const response = await fetch(`/api/admin/departemen/${slug}/members/${deletingMemberId}`, {
                   method: 'DELETE',
                 })
                 const data = await response.json()
